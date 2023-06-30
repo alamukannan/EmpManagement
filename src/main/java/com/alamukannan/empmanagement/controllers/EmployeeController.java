@@ -1,8 +1,7 @@
-package com.example.EmpManagement.controllers;
+package com.alamukannan.empmanagement.controllers;
 
-import com.example.EmpManagement.domain.Employee;
-import com.example.EmpManagement.dtos.EmployeeDTO;
-import com.example.EmpManagement.services.EmployeeService;
+import com.alamukannan.empmanagement.dtos.EmployeeDTO;
+import com.alamukannan.empmanagement.services.EmployeeService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
@@ -17,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class EmployeeController {
 
     private final EmployeeService employeeService;
-    private Logger log = LogManager.getLogger(EmployeeController.class);
+    private final Logger log = LogManager.getLogger(EmployeeController.class);
 
     public EmployeeController(EmployeeService employeeService) {
         this.employeeService = employeeService;

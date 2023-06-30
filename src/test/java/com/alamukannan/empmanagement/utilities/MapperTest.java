@@ -1,8 +1,7 @@
-package com.example.EmpManagement.utilities;
+package com.alamukannan.empmanagement.utilities;
 
-import com.example.EmpManagement.domain.Employee;
-import com.example.EmpManagement.dtos.EmployeeDTO;
-import org.junit.jupiter.api.BeforeEach;
+import com.alamukannan.empmanagement.domain.Employee;
+import com.alamukannan.empmanagement.dtos.EmployeeDTO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

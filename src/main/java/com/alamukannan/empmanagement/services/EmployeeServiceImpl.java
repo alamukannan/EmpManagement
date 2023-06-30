@@ -1,9 +1,9 @@
-package com.example.EmpManagement.services;
+package com.alamukannan.empmanagement.services;
 
-import com.example.EmpManagement.domain.Employee;
-import com.example.EmpManagement.dtos.EmployeeDTO;
-import com.example.EmpManagement.repository.EmployeeRepository;
-import com.example.EmpManagement.utilities.Mapper;
+import com.alamukannan.empmanagement.domain.Employee;
+import com.alamukannan.empmanagement.dtos.EmployeeDTO;
+import com.alamukannan.empmanagement.repository.EmployeeRepository;
+import com.alamukannan.empmanagement.utilities.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

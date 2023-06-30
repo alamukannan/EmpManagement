@@ -1,4 +1,4 @@
-package com.example.EmpManagement.domain;
+package com.alamukannan.empmanagement.domain;
 
 import javax.persistence.*;
 import java.util.Objects;

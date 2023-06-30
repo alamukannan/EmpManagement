@@ -1,6 +1,6 @@
-package com.example.EmpManagement.repository;
+package com.alamukannan.empmanagement.repository;
 
-import com.example.EmpManagement.domain.Employee;
+import com.alamukannan.empmanagement.domain.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

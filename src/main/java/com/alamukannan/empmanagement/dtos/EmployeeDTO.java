@@ -1,6 +1,4 @@
-package com.example.EmpManagement.dtos;
-
-import javax.persistence.Column;
+package com.alamukannan.empmanagement.dtos;
 
 public class EmployeeDTO {
 
