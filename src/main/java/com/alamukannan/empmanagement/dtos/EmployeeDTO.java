@@ -1,10 +1,19 @@
 package com.alamukannan.empmanagement.dtos;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
 public class EmployeeDTO {
 
     private Long id;
+
+    @NotBlank(message = "Name of the employee shouldn't be empty")
+    @Size(min = 4,message = "name should be greater than 4 letters")
     private String firstName;
     private  String lastName;
+
+    @Email
     private String email;
 
     public Long getId() {

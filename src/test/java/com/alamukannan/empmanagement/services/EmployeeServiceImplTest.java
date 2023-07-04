@@ -42,7 +42,6 @@ class EmployeeServiceImplTest {
         employeeDTO.setEmail("abc@gmail.com");
         Employee employee= Mapper.getEmployee(employeeDTO);
         given(employeeRepository.save(any(Employee.class))).willReturn(employee);
-       // EmployeeDTO employeeDTO1 = Mapper.getEmployeeDTO(employee);
 
         // When
         EmployeeDTO savedEmployee=  employeeService.createNewEmployee(employeeDTO);
