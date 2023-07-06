@@ -7,6 +7,9 @@ import com.alamukannan.empmanagement.utilities.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
@@ -23,5 +26,11 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee savedEmployee = employeeRepository.save(detachedEmployee);
 
         return Mapper.getEmployeeDTO(savedEmployee);
+    }
+
+    @Override
+    public List<EmployeeDTO> getAllEmployees() {
+      List<Employee> employees =  employeeRepository.findAll();
+      return  employees.stream().map( Mapper::getEmployeeDTO).collect(Collectors.toList());
     }
 }

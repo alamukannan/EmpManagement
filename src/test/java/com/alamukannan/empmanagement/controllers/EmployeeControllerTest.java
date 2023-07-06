@@ -3,11 +3,8 @@ package com.alamukannan.empmanagement.controllers;
 
 import com.alamukannan.empmanagement.dtos.EmployeeDTO;
 import com.alamukannan.empmanagement.services.EmployeeService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,16 +13,23 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -120,7 +124,50 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     }
 
 
+    @Test
+    @DisplayName("test getAllEmployees")
+    void getAllEmployees() {
+        // Given
+        List<EmployeeDTO> employeeDTOS = new ArrayList<>();
+        EmployeeDTO employeeDTO = new EmployeeDTO();
+        employeeDTO.setId(EMPLOYEE_IDENTIFIER1);
+        employeeDTO.setFirstName("alamuKhannan");
+        employeeDTO.setEmail("almu.hana@gmail.com");
+        employeeDTOS.add(employeeDTO);
 
+        given(employeeService.getAllEmployees()).willReturn(employeeDTOS);
 
+        // When
+        ResponseEntity<List<EmployeeDTO>> returnedEmp= employeeController.getAllEmployees();
+
+        //Then
+        assertNotNull(returnedEmp);
+        assertEquals(HttpStatus.OK,returnedEmp.getStatusCode());
+        assertEquals(1, Objects.requireNonNull(returnedEmp.getBody()).size());
+        then(employeeService).should().getAllEmployees();
+        then(employeeService).shouldHaveNoMoreInteractions();
+    }
+    @Test
+    @DisplayName("test getAllEmployees with 200")
+    void getAllEmployeesWithOK() throws Exception {
+        // Given
+        List<EmployeeDTO> employeeDTOS = new ArrayList<>();
+        EmployeeDTO employeeDTO = new EmployeeDTO();
+        employeeDTO.setId(EMPLOYEE_IDENTIFIER1);
+        employeeDTO.setFirstName("alamuKhannan");
+        employeeDTO.setEmail("almu.hana@gmail.com");
+        employeeDTOS.add(employeeDTO);
+
+        given(employeeService.getAllEmployees()).willReturn(employeeDTOS);
+        // Then
+        MockHttpServletResponse employees = mockMvc.perform(get("/api/v1/all").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn().getResponse();
+
+        // Then
+         assertNotNull(employees);
+         assertNotNull(employees.getContentAsString());
+
+    }
 
 }
