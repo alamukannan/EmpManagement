@@ -2,6 +2,7 @@ package com.alamukannan.empmanagement.exceptions;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -10,14 +11,24 @@ import java.util.Objects;
 public class ErrorResponse {
     private final int status;
     private final String message;
-
+    private final String appName;
+    private final LocalDateTime localDateTime;
     private List<ValidationError> errors;
 
-    public ErrorResponse(int status, String message) {
+    public ErrorResponse(int status, String message, String appName, LocalDateTime localDateTime) {
         this.status = status;
         this.message = message;
+        this.appName = appName;
+        this.localDateTime = localDateTime;
     }
 
+    public LocalDateTime getLocalDateTime() {
+        return localDateTime;
+    }
+
+    public String getAppName() {
+        return appName;
+    }
 
     public int getStatus() {
         return status;

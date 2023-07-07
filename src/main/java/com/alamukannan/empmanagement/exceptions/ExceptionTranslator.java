@@ -1,5 +1,7 @@
 package com.alamukannan.empmanagement.exceptions;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpHeaders;
@@ -13,8 +15,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.time.LocalDateTime;
+
 @ControllerAdvice
 public class ExceptionTranslator extends ResponseEntityExceptionHandler {
+    private final Logger log = LogManager.getLogger(ExceptionTranslator.class);
+
     private final String applicationName;
 
     private final Environment env;
@@ -30,7 +36,7 @@ public class ExceptionTranslator extends ResponseEntityExceptionHandler {
                                                                   HttpHeaders headers,
                                                                   HttpStatus status,
                                                                   WebRequest request) {
-        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY.value(), "Validation error. Check 'errors' field for details.");
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY.value(), "Validation error. Check 'errors' field for details.", this.applicationName, LocalDateTime.now());
         for (FieldError fieldError : ex.getBindingResult().getFieldErrors()) {
             errorResponse.addValidationError(fieldError.getField(), fieldError.getDefaultMessage());
         }
@@ -53,7 +59,8 @@ public class ExceptionTranslator extends ResponseEntityExceptionHandler {
                                                       String message,
                                                       HttpStatus httpStatus,
                                                       WebRequest request) {
-        ErrorResponse errorResponse = new ErrorResponse(httpStatus.value(), message);
+        ErrorResponse errorResponse = new ErrorResponse(httpStatus.value(), message, this.applicationName, LocalDateTime.now());
+        log.debug(exception);
         return ResponseEntity.status(httpStatus).body(errorResponse);
     }
 

@@ -1,3 +1,4 @@
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=alamukannan_EmpManagement&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=alamukannan_EmpManagement)
 The main aim of the project to create a project that driven by tests by using cutting-edge technologies and following principles of software engineering. 
 The API that I have created is called “Employee Management Tool” for managing employees in an organization. 
 To develop this project, have created a CI/CD pipeline with IntellijIDE,GitHub, GitHubActions, Sonar Cloud, and Coveralls for code analysis, code coverage respectively. 
