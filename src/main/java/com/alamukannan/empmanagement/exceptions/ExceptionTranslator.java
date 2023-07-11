@@ -49,6 +49,12 @@ public class ExceptionTranslator extends ResponseEntityExceptionHandler {
         return buildErrorResponse(exception, "Unknown error occurred", HttpStatus.INTERNAL_SERVER_ERROR, request);
     }
 
+    @ExceptionHandler(EmployeeNotFoundException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<Object> handleBadRequests(Exception exception, WebRequest request) {
+        return buildErrorResponse(exception, exception.getMessage(), HttpStatus.BAD_REQUEST, request);
+    }
+
     private ResponseEntity<Object> buildErrorResponse(Exception exception,
                                                       HttpStatus httpStatus,
                                                       WebRequest request) {

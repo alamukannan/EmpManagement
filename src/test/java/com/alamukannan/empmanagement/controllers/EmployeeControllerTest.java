@@ -21,6 +21,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -167,6 +168,112 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         // Then
          assertNotNull(employees);
          assertNotNull(employees.getContentAsString());
+
+    }
+
+    @Test
+    void updateEmployee(){
+        // Given
+        EmployeeDTO employeeDTO = new EmployeeDTO();
+        employeeDTO.setId(1L);
+        employeeDTO.setLastName("modifiedLast");
+
+        EmployeeDTO returnedEmp = new EmployeeDTO();
+        returnedEmp.setId(employeeDTO.getId());
+        returnedEmp.setLastName(employeeDTO.getLastName());
+
+        given(employeeService.updateEmployee(anyLong(),any(EmployeeDTO.class))).willReturn(returnedEmp);
+
+        // When
+      ResponseEntity<EmployeeDTO> response=  employeeController.updateEmployee(1L,employeeDTO);
+
+        //Then
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK,response.getStatusCode());
+    }
+
+    @Test
+    void updateEmployeeWithOk() throws Exception {
+        // Given
+        EmployeeDTO employeeDTO = new EmployeeDTO();
+        employeeDTO.setId(1L);
+        employeeDTO.setLastName("modifiedLast");
+        employeeDTO.setFirstName("first");
+        employeeDTO.setEmail("abc@Empl.com");
+
+        EmployeeDTO returnedEmp = new EmployeeDTO();
+        returnedEmp.setId(employeeDTO.getId());
+        returnedEmp.setLastName(employeeDTO.getLastName());
+        returnedEmp.setFirstName(employeeDTO.getFirstName());
+        returnedEmp.setEmail(employeeDTO.getEmail());
+
+        given(employeeService.updateEmployee(anyLong(),any(EmployeeDTO.class))).willReturn(returnedEmp);
+
+        //When
+        mockMvc.perform(put("/api/v1/employees/1").contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(employeeDTO)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.lastName",equalTo("modifiedLast")));
+
+        //Then
+        then(employeeService).should().updateEmployee(anyLong(),any(EmployeeDTO.class));
+        then(employeeService).shouldHaveNoMoreInteractions();
+
+    }
+
+    @Test
+    void updateEmployeeWith400() throws Exception {
+        //Given
+        EmployeeDTO employeeDTO = new EmployeeDTO();
+        employeeDTO.setId(1L);
+        employeeDTO.setLastName("modifiedLast");
+
+        //When
+        mockMvc.perform(put("/api/v1/employees/1").contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(employeeDTO)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void updateEmployeeWith400AndNotFoundException() throws Exception {
+        //Given
+        EmployeeDTO employeeDTO = new EmployeeDTO();
+        employeeDTO.setId(1L);
+        employeeDTO.setLastName("modifiedLast");
+
+        //When
+        mockMvc.perform(put("/api/v1/employees/1")
+                        .contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(employeeDTO)))
+                .andExpect(status().isBadRequest());
+
+    }
+
+    @Test
+    void deleteEmployee(){
+        // When
+        employeeController.deleteEmployee(1L);
+
+        //Then
+        then(employeeService).should().deleteEmployee(any(Long.class));
+        then(employeeService).shouldHaveNoMoreInteractions();
+
+
+    }
+
+    @Test
+    void deleteEmployeeStatusOK() throws Exception {
+//        Given
+        EmployeeDTO employeeDTO = new EmployeeDTO();
+        employeeDTO.setId(1L);
+        employeeDTO.setLastName("modifiedLast");
+        employeeDTO.setFirstName("first");
+        employeeDTO.setEmail("abc@Empl.com");
+//        when
+        mockMvc.perform(delete("/api/v1/employees/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(employeeDTO)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$",equalTo("Employee with ID: 1 has been deleted successfully")));
 
     }
 

@@ -2,6 +2,7 @@ package com.alamukannan.empmanagement.services;
 
 import com.alamukannan.empmanagement.domain.Employee;
 import com.alamukannan.empmanagement.dtos.EmployeeDTO;
+import com.alamukannan.empmanagement.exceptions.EmployeeNotFoundException;
 import com.alamukannan.empmanagement.repository.EmployeeRepository;
 import com.alamukannan.empmanagement.utilities.Mapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,10 +14,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.startsWith;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 
@@ -93,4 +94,70 @@ class EmployeeServiceImplTest {
         assertEquals("alamu",employeeDTOS.get(0).getFirstName());
     }
 
+    @Test
+    void UpdateEmployee(){
+        // Given
+        Employee employee = new Employee();
+        employee.setId(1L);
+        employee.setLastName("last");
+        employee.setEmail("abc@gmail.com");
+        employee.setFirstName("firstname");
+        Optional<Employee> optionalEmployee = Optional.of(employee);
+        given(employeeRepository.findById(any(Long.class))).willReturn(optionalEmployee);
+
+        EmployeeDTO employeeDTO = new EmployeeDTO();
+        employeeDTO.setId(employee.getId());
+        employeeDTO.setLastName("modifiedLast");
+
+        employee.setId(employeeDTO.getId());
+        employee.setLastName(employeeDTO.getLastName());
+
+        given(employeeRepository.save(any(Employee.class))).willReturn(employee);
+
+        // When
+
+       EmployeeDTO returnedEmp =   employeeService.updateEmployee(1L,employeeDTO);
+
+      // Then
+        assertNotNull(returnedEmp);
+        assertEquals("modifiedLast",returnedEmp.getLastName());
+
+    }
+
+    @Test
+    void updateEmployeeWithException(){
+        //Given
+        EmployeeDTO employeeDTO = new EmployeeDTO();
+        given(employeeRepository.findById(anyLong())).willReturn(Optional.empty());
+
+        //Then
+        assertThrows(EmployeeNotFoundException.class,()->employeeService.updateEmployee(1L,employeeDTO));
+    }
+
+    @Test
+    void deleteEmployee() {
+        //        given
+        Employee employee = new Employee();
+        employee.setId(1L);
+        employee.setLastName("last");
+        employee.setEmail("abc@gmail.com");
+        employee.setFirstName("firstname");
+        given(employeeRepository.findById(any())).willReturn(Optional.of(employee));
+//        When
+        employeeService.deleteEmployee(employee.getId());
+
+//        then
+        then(employeeRepository).should().delete(employee);
+        then(employeeRepository).shouldHaveNoMoreInteractions();
+    }
+
+    @Test
+    void deleteEmployeeWithException(){
+        //Given
+        given(employeeRepository.findById(anyLong())).willReturn(Optional.empty());
+
+        // Then
+        assertThrows(EmployeeNotFoundException.class,()-> employeeService.deleteEmployee(1L));
+
+    }
 }
