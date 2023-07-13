@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: EmployeeManagement
+  datasource:
+    url: jdbc:mysql://localhost:3306/ems_dev
+    username: ems_dev_user
+    password: emsv1
+    platform: mysql
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    database: mysql
+    show-sql: true
+ #   properties:
+ #     javax:
+ #       persistence:
+ #         schema-generation:
+  #          create-source: metadata
+   #         scripts:
+    #          action: create
+     #         create-target: ems_database_create.sql

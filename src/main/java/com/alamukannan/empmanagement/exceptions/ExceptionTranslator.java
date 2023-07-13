@@ -20,14 +20,12 @@ import java.time.LocalDateTime;
 @ControllerAdvice
 public class ExceptionTranslator extends ResponseEntityExceptionHandler {
     private final Logger log = LogManager.getLogger(ExceptionTranslator.class);
-
-    private final String applicationName;
+    private  String applicationName ="EMS";
 
     private final Environment env;
 
-    public ExceptionTranslator(Environment env, @Value("${spring.application.name}") String applicationName) {
+    public ExceptionTranslator( Environment env) {
         this.env = env;
-        this.applicationName = applicationName;
     }
 
     @Override
