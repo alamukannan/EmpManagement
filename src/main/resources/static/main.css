@@ -18,3 +18,31 @@
     background-color: rgb(0 0 0 / 50%);
     border-color:rgb(0 0 0);
 }
+#empList {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#empList td, #empList th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#empList tr:nth-child(even){background-color: #f2f2f2;}
+
+
+#empList th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #3b3737a6;
+    color: white;
+}
+
+table#empTable {
+    width: 100%;
+}
+div#addDiv {
+    margin-top: 30px;
+}

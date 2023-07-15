@@ -6,13 +6,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 
-@RestController
-@RequestMapping("/api/v1")
+@Controller
 public class EmployeeController {
 
     private final EmployeeService employeeService;
@@ -20,6 +20,11 @@ public class EmployeeController {
 
     public EmployeeController(EmployeeService employeeService) {
         this.employeeService = employeeService;
+    }
+
+    @GetMapping("/")
+    public String index() {
+        return "index";
     }
     @PostMapping(value = "/new",consumes = "application/json",produces = "application/json")
     public ResponseEntity<EmployeeDTO> createNewEmployee(@Valid @RequestBody EmployeeDTO employeeDTO){
@@ -46,6 +51,7 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/employees/{id}")
+    @ResponseBody()
     public ResponseEntity<Object> deleteEmployee(@PathVariable Long id){
 
             employeeService.deleteEmployee(id);

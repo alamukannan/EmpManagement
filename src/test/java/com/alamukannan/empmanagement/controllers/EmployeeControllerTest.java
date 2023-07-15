@@ -1,6 +1,7 @@
 package com.alamukannan.empmanagement.controllers;
 
 
+import com.alamukannan.empmanagement.domain.Employee;
 import com.alamukannan.empmanagement.dtos.EmployeeDTO;
 import com.alamukannan.empmanagement.services.EmployeeService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,10 +31,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
-
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -62,6 +61,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     }
 
     @Test
+    void getIndexPage() throws Exception {
+        // When
+        mockMvc.perform(get("/"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("index"));
+    }
+
+    @Test
     @DisplayName("test creating new employee")
     void saveEmployeeTest(){
 
@@ -70,6 +77,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         employeeDTO.setId(EMPLOYEE_IDENTIFIER1);
         employeeDTO.setFirstName("alamu");
         employeeDTO.setLastName("khanna");
+        employeeDTO.setEmail("abc@gmail.com");
 
         given(employeeService.createNewEmployee(any(EmployeeDTO.class))).willReturn(employeeDTO);
 
@@ -97,7 +105,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         given(employeeService.createNewEmployee(any(EmployeeDTO.class))).willReturn(employeeDTO);
 
        //        When
-       mockMvc.perform(post("/api/v1/new")
+       mockMvc.perform(post("/new")
                        .contentType(MediaType.APPLICATION_JSON)
                        .content(mapper.writeValueAsString(employeeDTO)))
                .andExpect(status().isCreated())
@@ -118,7 +126,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         EmployeeDTO employeeDTO = new EmployeeDTO();
 
         //        When
-       mockMvc.perform(post("/api/v1/new")
+       mockMvc.perform(post("/new")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(employeeDTO)))
                 .andExpect(status().isBadRequest());
@@ -161,7 +169,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
         given(employeeService.getAllEmployees()).willReturn(employeeDTOS);
         // Then
-        MockHttpServletResponse employees = mockMvc.perform(get("/api/v1/all").contentType(MediaType.APPLICATION_JSON))
+        MockHttpServletResponse employees = mockMvc.perform(get("/all").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
 
@@ -190,6 +198,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         //Then
         assertNotNull(response);
         assertEquals(HttpStatus.OK,response.getStatusCode());
+        assertNotNull(Objects.requireNonNull(response.getBody()).getId());
+        assertEquals("modifiedLast",response.getBody().getLastName());
+        assertNull(response.getBody().getFirstName());
+        assertNull(response.getBody().getEmail());
     }
 
     @Test
@@ -210,10 +222,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         given(employeeService.updateEmployee(anyLong(),any(EmployeeDTO.class))).willReturn(returnedEmp);
 
         //When
-        mockMvc.perform(put("/api/v1/employees/1").contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(put("/employees/1").contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(employeeDTO)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.lastName",equalTo("modifiedLast")));
+                .andExpect(jsonPath("$.lastName",equalTo("modifiedLast")))
+                .andExpect(jsonPath("$.firstName",equalTo("first")))
+                .andExpect(jsonPath("$.email",equalTo("abc@Empl.com")))
+                .andExpect(jsonPath("$.id",equalTo(1)));
 
         //Then
         then(employeeService).should().updateEmployee(anyLong(),any(EmployeeDTO.class));
@@ -229,7 +244,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         employeeDTO.setLastName("modifiedLast");
 
         //When
-        mockMvc.perform(put("/api/v1/employees/1").contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(put("/employees/1").contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(employeeDTO)))
                 .andExpect(status().isBadRequest());
     }
@@ -242,7 +257,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         employeeDTO.setLastName("modifiedLast");
 
         //When
-        mockMvc.perform(put("/api/v1/employees/1")
+        mockMvc.perform(put("/employees/1")
                         .contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(employeeDTO)))
                 .andExpect(status().isBadRequest());
 
@@ -269,7 +284,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         employeeDTO.setFirstName("first");
         employeeDTO.setEmail("abc@Empl.com");
 //        when
-        mockMvc.perform(delete("/api/v1/employees/1")
+        mockMvc.perform(delete("/employees/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(employeeDTO)))
                 .andExpect(status().isOk())

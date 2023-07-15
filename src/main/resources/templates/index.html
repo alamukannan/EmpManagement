@@ -8,6 +8,7 @@
     <link href="../static/bootstrap-5.0.2-dist/css/bootstrap.css" rel="stylesheet" th:href="@{bootstrap-5.0.2-dist/css/bootstrap.css}"/>
     <script src="../static/bootstrap-5.0.2-dist/js/bootstrap.js" th:href="@{bootstrap-5.0.2-dist/js/bootstrap.js}"></script>
     <link href ="../static/main.css" th:href="@{/main.css}" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <script src="../static/index.js" th:src="@{/index.js}" type="text/javascript" ></script>
     <title>EmployeeManagement</title>
 
@@ -23,11 +24,14 @@
             </button>
         </div>
     </nav>
-    <form id="form_activate" class="mb-3" novalidate>
+    <form id="form_activate" class="mb-3" novalidate style="display: none">
         <div class="row">
             <div class="mb-3 ">
                 <label for="firstName" class="form-label">FirstName</label>
                 <input type="text" class="form-control" id="firstName" required/>
+                <div class="invalid-feedback firstName">
+                    Please Provide name of the employee.
+                </div>
             </div>
         </div>
         <div class="row">
@@ -40,17 +44,47 @@
             <div class="mb-3 ">
                 <label for="email" class="form-label">Email</label>
                 <input type="text" class="form-control" id="email" required/>
+                <div class="invalid-feedback email">
+                    Please Provide Email of the employee.
+                </div>
             </div>
         </div>
 
         <div class="custom_btn">
             <button type="submit" class=" btn_submit btn btn-primary" style="width:10rem;">Submit</button>
         </div>
-
     </form >
 
-    <div>
+    <!-- Show list div-->
+    <div id="empList">
+        <table id="empTable">
+            <thead id="empHead">
+            <tr>
+                <th>FIRSTNAME</th>
+                <th>LASTNAME</th>
+                <th>EMAIL</th>
+                <th>OPERATIONS</th>
+            </tr>
+            </thead>
+            <tbody id="empBody">
+            <tr  id="empty">
+                <td>alamu</td>
+                <td>khanna</td>
+                <td>abc@gmail.com</td>
+                <td>
+                    <div>
+                        <button class="edit btn btn-warning">edit</button>
+                        <button class="delete btn btn-danger">delete</button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
 
+    </div>
+
+    <div id="addDiv" class="custom_btn">
+    <button class=" btn btn-success ">Add Employee</button>
     </div>
 
 </div>

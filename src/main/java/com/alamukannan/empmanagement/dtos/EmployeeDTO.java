@@ -14,6 +14,7 @@ public class EmployeeDTO {
     private  String lastName;
 
     @Email
+    @NotBlank(message = "Email of the employee shouldn't be empty")
     private String email;
 
     public Long getId() {

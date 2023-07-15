@@ -151,6 +151,54 @@
 				<artifactId>sonar-maven-plugin</artifactId>
 				<version>3.9.0.2155</version>
 			</plugin>
+			<!--  PIT Mutation-->
+
+			<plugin>
+				<groupId>org.pitest</groupId>
+				<artifactId>pitest-maven</artifactId>
+				<version>1.4.9</version>
+				<executions>
+					<execution>
+						<id>pit-report</id>
+						<!-- optional, this example attached the goal into mvn test phase -->
+						<phase>test</phase>
+						<goals>
+							<goal>mutationCoverage</goal>
+						</goals>
+					</execution>
+				</executions>
+				<dependencies>
+					<!-- https://mvnrepository.com/artifact/org.pitest/pitest-junit5-plugin -->
+					<dependency>
+						<groupId>org.pitest</groupId>
+						<artifactId>pitest-junit5-plugin</artifactId>
+						<version>0.12</version>
+					</dependency>
+
+				</dependencies>
+				<configuration>
+					<targetClasses>
+						<param>com.alamukannan.empmanagement.controllers.*</param>
+						<param>com.alamukannan.empmanagement.services.*</param>
+					</targetClasses>
+					<excludedTestClasses>
+						<param>com.alamukannan.empmanagement.services.**/*IT.java</param>
+					</excludedTestClasses>
+					<targetTests>
+						<param>com.alamukannan.empmanagement.controllers.*</param>
+						<param>com.alamukannan.empmanagement.services.*</param>
+					</targetTests>
+					<mutators>
+						<mutator>DEFAULTS</mutator>
+					</mutators>
+					<mutationThreshold>80</mutationThreshold>
+					<outputFormats>
+						<outputFormat>XML</outputFormat>
+						<outputFormat>HTML</outputFormat>
+					</outputFormats>
+
+				</configuration>
+			</plugin>
 
 		</plugins>
 	</build>
@@ -162,6 +210,28 @@
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>0.8.6</version>
+			</plugin>
+			<plugin>
+				<groupId>org.pitest</groupId>
+				<artifactId>pitest-maven</artifactId>
+				<version>1.4.9</version>
+				<configuration>
+					<skip>false</skip>
+					<reportsDirectory>${project.build.directory}/pit-custom-output-dir</reportsDirectory>
+					<sourceDataFormats>
+						<sourceDataFormat>HTML</sourceDataFormat>
+					</sourceDataFormats>
+					<siteReportName>my-pit-report-name</siteReportName>
+					<siteReportDescription>my pit report custom description</siteReportDescription>
+					<siteReportDirectory>pit-custom-site-directory</siteReportDirectory>
+				</configuration>
+				<reportSets>
+					<reportSet>
+						<reports>
+							<report>report</report>
+						</reports>
+					</reportSet>
+				</reportSets>
 			</plugin>
 
 		</plugins>

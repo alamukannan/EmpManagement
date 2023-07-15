@@ -97,22 +97,28 @@ class EmployeeServiceImplTest {
     @Test
     void UpdateEmployee(){
         // Given
+        EmployeeDTO employeeDTO = new EmployeeDTO();
+        employeeDTO.setId(1L);
+        employeeDTO.setLastName("last");
+        employeeDTO.setFirstName("first");
+        employeeDTO.setEmail("abc@gmail.com");
+
         Employee employee = new Employee();
+        employee.setId(employeeDTO.getId());
+        employee.setLastName("modified");
+        employee.setFirstName("mfirst");
+        employee.setEmail("m@gmail.com");
+
+        Employee savedProject = new Employee();
         employee.setId(1L);
-        employee.setLastName("last");
-        employee.setEmail("abc@gmail.com");
-        employee.setFirstName("firstname");
+        employee.setLastName(employeeDTO.getLastName());
+        employee.setFirstName(employeeDTO.getFirstName());
+        employee.setEmail(employeeDTO.getEmail());
+
+
         Optional<Employee> optionalEmployee = Optional.of(employee);
         given(employeeRepository.findById(any(Long.class))).willReturn(optionalEmployee);
-
-        EmployeeDTO employeeDTO = new EmployeeDTO();
-        employeeDTO.setId(employee.getId());
-        employeeDTO.setLastName("modifiedLast");
-
-        employee.setId(employeeDTO.getId());
-        employee.setLastName(employeeDTO.getLastName());
-
-        given(employeeRepository.save(any(Employee.class))).willReturn(employee);
+        given(employeeRepository.save(any(Employee.class))).willReturn(savedProject);
 
         // When
 
@@ -120,7 +126,15 @@ class EmployeeServiceImplTest {
 
       // Then
         assertNotNull(returnedEmp);
-        assertEquals("modifiedLast",returnedEmp.getLastName());
+        assertEquals(savedProject.getLastName(),returnedEmp.getLastName());
+        assertNotEquals(employee.getLastName(),returnedEmp.getLastName());
+        assertNotEquals(employee.getFirstName(),returnedEmp.getFirstName());
+        assertNotEquals(employee.getEmail(),returnedEmp.getEmail());
+        assertEquals(savedProject.getFirstName(),returnedEmp.getFirstName());
+        assertEquals(savedProject.getEmail(),returnedEmp.getEmail());
+        assertEquals(optionalEmployee,Optional.of(employee));
+        then(employeeRepository).should().save(any(Employee.class));
+        then(employeeRepository).shouldHaveNoMoreInteractions();
 
     }
 
