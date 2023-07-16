@@ -25,7 +25,8 @@
 		<sonar.coverage.exclusions>
 			**/domain/*.*,
 			**/EmpManagementApplication.*,
-			  **/bootstrap/*.*
+			**/bootstrap/*.*,
+			**/com.alamukannan.empmanagement.exceptions.ExceptionTranslator.*
 		</sonar.coverage.exclusions>
 	</properties>
 	<dependencies>
@@ -67,6 +68,32 @@
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
+<!-- Cucumber-->
+		<dependency>
+			<groupId>io.cucumber</groupId>
+			<artifactId>cucumber-java8</artifactId>
+			<version>4.2.0</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>io.cucumber</groupId>
+			<artifactId>cucumber-junit</artifactId>
+			<version>4.2.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.cucumber</groupId>
+			<artifactId>cucumber-spring</artifactId>
+			<version>4.2.0</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- To invoke REST endpoints from Cucumber step definitions -->
+		<dependency>
+			<groupId>io.rest-assured</groupId>
+			<artifactId>rest-assured</artifactId>
+			<scope>test</scope>
+		</dependency>
 
 
 	</dependencies>
@@ -85,6 +112,7 @@
 				<configuration>
 					<includes>
 						<include>**/*IT.java</include>
+						<include>**/*E2E.java</include>
 					</includes>
 					<additionalClasspathElements>
 						<additionalClasspathElement>${basedir}/target/classes</additionalClasspathElement>
