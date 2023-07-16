@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
-public class EmployeeServiceImplIT {
+class EmployeeServiceImplIT {
 
     @Autowired
     EmployeeRepository employeeRepository;

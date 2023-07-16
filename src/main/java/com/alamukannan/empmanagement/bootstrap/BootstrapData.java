@@ -23,10 +23,10 @@ public class BootstrapData implements CommandLineRunner {
     @Override
     public void run(String... args) {
         log.debug("Loading BootStrap Data -----");
-        LoadEmployees();
+        loadEmployees();
     }
 
-    private void LoadEmployees(){
+    private void loadEmployees(){
 
         Employee employee = new Employee();
         employee.setLastName("Somu");

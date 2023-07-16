@@ -2,7 +2,6 @@ package com.alamukannan.empmanagement.exceptions;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -64,7 +63,7 @@ public class ExceptionTranslator extends ResponseEntityExceptionHandler {
                                                       HttpStatus httpStatus,
                                                       WebRequest request) {
         ErrorResponse errorResponse = new ErrorResponse(httpStatus.value(), message, this.applicationName, LocalDateTime.now());
-        log.debug(exception);
+        log.debug("An exception occurred {} with a request {}",exception,request);
         return ResponseEntity.status(httpStatus).body(errorResponse);
     }
 
