@@ -13,7 +13,7 @@ public class ErrorResponse {
     private final String message;
     private final String appName;
     private final LocalDateTime localDateTime;
-    private List<ValidationError> errors;
+    private List<ValidationError> errors = new ArrayList<>();
 
     public ErrorResponse(int status, String message, String appName, LocalDateTime localDateTime) {
         this.status = status;
@@ -65,9 +65,6 @@ public class ErrorResponse {
     }
 
     public void addValidationError(String field, String message){
-        if(Objects.isNull(errors)){
-            errors = new ArrayList<>();
-        }
         errors.add(new ValidationError(field, message));
     }
 }

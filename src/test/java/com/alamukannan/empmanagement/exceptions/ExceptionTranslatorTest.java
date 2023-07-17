@@ -80,4 +80,5 @@ class ExceptionTranslatorTest {
         assertNotNull(response);
         assertEquals(500,response.getStatusCodeValue());
     }
+
 }

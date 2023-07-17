@@ -26,8 +26,14 @@
 			**/domain/*.*,
 			**/EmpManagementApplication.*,
 			**/bootstrap/*.*,
-			**/com.alamukannan.empmanagement.exceptions.ExceptionTranslator.*
+			**/ExceptionTranslator.*
 		</sonar.coverage.exclusions>
+		<sonar.exclusions>
+			**/domain/*.*,
+			**/EmpManagementApplication.*,
+			**/bootstrap/*.*,
+			**/ExceptionTranslator.*
+		</sonar.exclusions>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -57,11 +63,25 @@
 			<artifactId>h2</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+		<!-- Testcontainers -->
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>mysql</artifactId>
+			<version>1.16.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<version>1.16.0</version>
+			<scope>test</scope>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>

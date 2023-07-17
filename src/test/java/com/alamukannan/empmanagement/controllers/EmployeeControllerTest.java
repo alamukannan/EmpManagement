@@ -1,10 +1,10 @@
 package com.alamukannan.empmanagement.controllers;
 
 
-import com.alamukannan.empmanagement.domain.Employee;
 import com.alamukannan.empmanagement.dtos.EmployeeDTO;
 import com.alamukannan.empmanagement.services.EmployeeService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,6 +21,8 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 
 import java.util.ArrayList;
@@ -31,7 +33,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
@@ -46,6 +47,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     EmployeeController employeeController;
     @Mock
     EmployeeService employeeService;
+
+    @Mock
+    BindingResult bindingResult;
+
+    @Mock
+    MethodArgumentTypeMismatchException exception;
 
 
     MockMvc mockMvc;
@@ -82,7 +89,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         given(employeeService.createNewEmployee(any(EmployeeDTO.class))).willReturn(employeeDTO);
 
         // When
-       ResponseEntity<EmployeeDTO> response = employeeController.createNewEmployee(employeeDTO);
+       ResponseEntity<Object> response = employeeController.createNewEmployee(employeeDTO,bindingResult);
 
        // Then
       assertNotNull(response.getBody());
@@ -129,7 +136,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
        mockMvc.perform(post("/new")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(employeeDTO)))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+               .andExpect(jsonPath("$.firstName", Is.is("Name of the employee shouldn't be empty")))
+               .andExpect(jsonPath("$.email", Is.is("Email of the employee shouldn't be empty")))
+       ;
     }
 
 
@@ -291,5 +301,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
                 .andExpect(jsonPath("$",equalTo("Employee with ID: 1 has been deleted successfully")));
 
     }
+
 
 }

@@ -6,8 +6,6 @@ import org.springframework.core.env.Environment;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -25,19 +23,6 @@ public class ExceptionTranslator extends ResponseEntityExceptionHandler {
 
     public ExceptionTranslator( Environment env) {
         this.env = env;
-    }
-
-    @Override
-    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
-                                                                  HttpHeaders headers,
-                                                                  HttpStatus status,
-                                                                  WebRequest request) {
-        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY.value(), "Validation error. Check 'errors' field for details.", this.applicationName, LocalDateTime.now());
-        for (FieldError fieldError : ex.getBindingResult().getFieldErrors()) {
-            errorResponse.addValidationError(fieldError.getField(), fieldError.getDefaultMessage());
-        }
-        return ResponseEntity.unprocessableEntity().body(errorResponse);
     }
 
     @ExceptionHandler(Exception.class)

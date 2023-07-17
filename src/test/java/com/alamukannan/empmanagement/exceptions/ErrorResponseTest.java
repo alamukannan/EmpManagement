@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -30,7 +31,6 @@ class ErrorResponseTest {
 
         assertEquals(100,errorResponse.getStatus());
         assertEquals("test message",errorResponse.getMessage());
-        assertNull(errorResponse.getErrors());
         errorResponse.addValidationError("firstName","name shouldn't ne null");
         assertEquals(1,errorResponse.getErrors().size());
         assertNotNull(errorResponse.getErrors().get(0));
@@ -54,10 +54,11 @@ class ErrorResponseTest {
     @Test
     void addValidationError() {
         // When
-        assertNull(errorResponse.getErrors());
+        assertEquals(0,errorResponse.getErrors().size());
         errorResponse.addValidationError("new","testMes");
         // Then
         assertNotNull(errorResponse.getErrors());
         assertEquals(1,errorResponse.getErrors().size());
     }
+
 }
