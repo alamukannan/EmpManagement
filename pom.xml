@@ -25,14 +25,12 @@
 		<sonar.coverage.exclusions>
 			**/domain/*.*,
 			**/EmpManagementApplication.*,
-			**/bootstrap/*.*,
-			**/ExceptionTranslator.*
+			**/bootstrap/*.*
 		</sonar.coverage.exclusions>
 		<sonar.exclusions>
 			**/domain/*.*,
 			**/EmpManagementApplication.*,
-			**/bootstrap/*.*,
-			**/ExceptionTranslator.*
+			**/bootstrap/*.*
 		</sonar.exclusions>
 	</properties>
 	<dependencies>

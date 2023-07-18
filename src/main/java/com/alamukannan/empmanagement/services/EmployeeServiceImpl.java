@@ -45,7 +45,6 @@ public class EmployeeServiceImpl implements EmployeeService {
             detachedEmployee.setFirstName(employeeDTO.getFirstName());
             detachedEmployee.setEmail(employeeDTO.getEmail());
             detachedEmployee.setLastName(employeeDTO.getLastName());
-            detachedEmployee.setId(id);
          Employee updatedEmployee =   employeeRepository.save(detachedEmployee);
             return Mapper.getEmployeeDTO(updatedEmployee);
         }else

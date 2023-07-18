@@ -9,13 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 @Controller
 public class EmployeeController {
@@ -33,9 +31,10 @@ public class EmployeeController {
     }
     @PostMapping(value = "/new",consumes = "application/json",produces = "application/json")
     public ResponseEntity<Object> createNewEmployee(@Valid @RequestBody EmployeeDTO employeeDTO, BindingResult bindingResult){
+
         log.info("Requested to save new Employee");
         if (bindingResult.hasErrors()){
-            log.error("Problem with RequestBody in while creating project");
+            log.error("Problem with RequestBody in while creating Employee");
             Map<String, String> errorsMap = new HashMap<>();
             bindingResult.getFieldErrors().forEach(fieldError -> errorsMap.put(fieldError.getField(), fieldError.getDefaultMessage()));
             return new ResponseEntity<>(errorsMap,HttpStatus.BAD_REQUEST);
@@ -70,20 +69,4 @@ public class EmployeeController {
             return new ResponseEntity<>("Employee with ID: "+id+" has been deleted successfully",HttpStatus.OK);
 
     }
-
-    // Exceptions Handling
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public ResponseEntity<Object> handleTypeMismatch(MethodArgumentTypeMismatchException ex) {
-        String name = ex.getName();
-        String type = Objects.requireNonNull(ex.getRequiredType()).getSimpleName();
-        Object value = ex.getValue();
-        var message = String.format("'%s' should be a valid '%s' and '%s' isn't",
-                name, type, value);
-        return new ResponseEntity<>(message,HttpStatus.BAD_REQUEST);
-
-    }
-
-
-
 }

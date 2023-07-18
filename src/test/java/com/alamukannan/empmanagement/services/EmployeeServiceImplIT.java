@@ -84,6 +84,11 @@ class EmployeeServiceImplIT {
         // Then
         assertNotNull(returnedEmp);
         assertEquals("modifiedLast",returnedEmp.getLastName());
+        assertNotNull(returnedEmp.getId());
+        assertEquals(2,returnedEmp.getId());
+        assertNull(returnedEmp.getEmail());
+        assertNull(returnedEmp.getFirstName());
+
 
     }
 

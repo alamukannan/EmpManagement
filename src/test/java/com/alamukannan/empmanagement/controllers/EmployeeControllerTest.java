@@ -16,23 +16,19 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
-
-import static org.hamcrest.Matchers.equalTo;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
@@ -51,8 +47,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     @Mock
     BindingResult bindingResult;
 
-    @Mock
-    MethodArgumentTypeMismatchException exception;
 
 
     MockMvc mockMvc;
@@ -77,7 +71,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
     @Test
     @DisplayName("test creating new employee")
-    void saveEmployeeTest(){
+    void saveEmployeeTest() throws NoSuchMethodException {
 
         // Given
         EmployeeDTO employeeDTO = new EmployeeDTO();
@@ -95,6 +89,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
       assertNotNull(response.getBody());
 
       assertEquals(HttpStatus.CREATED,response.getStatusCode());
+      assertEquals(employeeDTO.getClass().getDeclaredMethod("getFirstName"),Objects.requireNonNull(response.getBody().getClass().getDeclaredMethod("getFirstName")));
       then(employeeService).should().createNewEmployee(any(EmployeeDTO.class));
       then(employeeService).shouldHaveNoMoreInteractions();
 
@@ -131,15 +126,32 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     void createNewProjectStatusIs400() throws Exception {
         //        given
         EmployeeDTO employeeDTO = new EmployeeDTO();
+        employeeDTO.setFirstName("abc");
 
         //        When
        mockMvc.perform(post("/new")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(employeeDTO)))
                 .andExpect(status().isBadRequest())
-               .andExpect(jsonPath("$.firstName", Is.is("Name of the employee shouldn't be empty")))
-               .andExpect(jsonPath("$.email", Is.is("Email of the employee shouldn't be empty")))
-       ;
+               .andExpect(jsonPath("$.firstName", Is.is("name should be greater than 4 letters")))
+               .andExpect(jsonPath("$.email", Is.is("Email of the employee shouldn't be empty")));
+    }
+
+    @Test
+    void createNewProjectStatusIs400withEmptyEmployee() throws Exception {
+//        given
+        EmployeeDTO employeeDTO = new EmployeeDTO();
+        employeeDTO.setId(1L);
+
+
+//        When
+        mockMvc.perform(post("/new")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(employeeDTO)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.firstName", Is.is("Name of the employee shouldn't be empty")))
+                .andExpect(jsonPath("$.email",Is.is("Email of the employee shouldn't be empty")));
+
     }
 
 
@@ -210,6 +222,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         assertEquals(HttpStatus.OK,response.getStatusCode());
         assertNotNull(Objects.requireNonNull(response.getBody()).getId());
         assertEquals("modifiedLast",response.getBody().getLastName());
+        assertNotNull(returnedEmp.getId());
+        assertNotNull(response.getBody().getId());
         assertNull(response.getBody().getFirstName());
         assertNull(response.getBody().getEmail());
     }

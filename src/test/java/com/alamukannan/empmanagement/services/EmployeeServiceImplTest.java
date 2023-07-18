@@ -133,6 +133,10 @@ class EmployeeServiceImplTest {
         assertEquals(savedProject.getFirstName(),returnedEmp.getFirstName());
         assertEquals(savedProject.getEmail(),returnedEmp.getEmail());
         assertEquals(optionalEmployee,Optional.of(employee));
+        assertNotNull(optionalEmployee.get().getId());
+        assertNotNull(optionalEmployee.get().getLastName());
+        assertNotNull(optionalEmployee.get().getFirstName());
+
         then(employeeRepository).should().save(any(Employee.class));
         then(employeeRepository).shouldHaveNoMoreInteractions();
 
