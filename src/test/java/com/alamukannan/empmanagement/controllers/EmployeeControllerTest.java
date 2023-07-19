@@ -37,7 +37,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
      static final Long EMPLOYEE_IDENTIFIER1 =1L;
-     static final Long EMPLOYEE_IDENTIFIER2 = 2L;
+     
+     static final String FIRST_NAME ="alamu";
+     static final String LAST_NAME ="khanna";
+     static final String EMAIL ="abc@gmail.com";
 
 
     EmployeeController employeeController;
@@ -76,9 +79,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         // Given
         EmployeeDTO employeeDTO = new EmployeeDTO();
         employeeDTO.setId(EMPLOYEE_IDENTIFIER1);
-        employeeDTO.setFirstName("alamu");
-        employeeDTO.setLastName("khanna");
-        employeeDTO.setEmail("abc@gmail.com");
+        employeeDTO.setFirstName(FIRST_NAME);
+        employeeDTO.setLastName(LAST_NAME);
+        employeeDTO.setEmail(EMAIL);
 
         given(employeeService.createNewEmployee(any(EmployeeDTO.class))).willReturn(employeeDTO);
 
@@ -102,7 +105,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         EmployeeDTO employeeDTO = new EmployeeDTO();
         employeeDTO.setId(EMPLOYEE_IDENTIFIER1);
         employeeDTO.setFirstName("alamuKhannan");
-        employeeDTO.setEmail("almu.hana@gmail.com");
+        employeeDTO.setEmail(EMAIL);
 
         given(employeeService.createNewEmployee(any(EmployeeDTO.class))).willReturn(employeeDTO);
 
@@ -117,7 +120,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
                .andExpect(jsonPath("$.id",equalTo(1)))
                .andExpect(jsonPath("$.firstName",equalTo("alamuKhannan")))
                .andExpect(jsonPath("$.lastName",equalTo(null)))
-               .andExpect(jsonPath("$.email",equalTo("almu.hana@gmail.com")))
+               .andExpect(jsonPath("$.email",equalTo(EMAIL)))
        ;
     }
 
@@ -141,7 +144,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     void createNewProjectStatusIs400withEmptyEmployee() throws Exception {
 //        given
         EmployeeDTO employeeDTO = new EmployeeDTO();
-        employeeDTO.setId(1L);
+        employeeDTO.setId(EMPLOYEE_IDENTIFIER1);
 
 
 //        When
@@ -162,8 +165,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         List<EmployeeDTO> employeeDTOS = new ArrayList<>();
         EmployeeDTO employeeDTO = new EmployeeDTO();
         employeeDTO.setId(EMPLOYEE_IDENTIFIER1);
-        employeeDTO.setFirstName("alamuKhannan");
-        employeeDTO.setEmail("almu.hana@gmail.com");
+        employeeDTO.setFirstName(FIRST_NAME);
+        employeeDTO.setEmail(EMAIL);
         employeeDTOS.add(employeeDTO);
 
         given(employeeService.getAllEmployees()).willReturn(employeeDTOS);
@@ -185,8 +188,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         List<EmployeeDTO> employeeDTOS = new ArrayList<>();
         EmployeeDTO employeeDTO = new EmployeeDTO();
         employeeDTO.setId(EMPLOYEE_IDENTIFIER1);
-        employeeDTO.setFirstName("alamuKhannan");
-        employeeDTO.setEmail("almu.hana@gmail.com");
+        employeeDTO.setFirstName(FIRST_NAME);
+        employeeDTO.setEmail(EMAIL);
         employeeDTOS.add(employeeDTO);
 
         given(employeeService.getAllEmployees()).willReturn(employeeDTOS);
@@ -232,10 +235,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     void updateEmployeeWithOk() throws Exception {
         // Given
         EmployeeDTO employeeDTO = new EmployeeDTO();
-        employeeDTO.setId(1L);
+        employeeDTO.setId(EMPLOYEE_IDENTIFIER1);
         employeeDTO.setLastName("modifiedLast");
-        employeeDTO.setFirstName("first");
-        employeeDTO.setEmail("abc@Empl.com");
+        employeeDTO.setFirstName(FIRST_NAME);
+        employeeDTO.setEmail(EMAIL);
 
         EmployeeDTO returnedEmp = new EmployeeDTO();
         returnedEmp.setId(employeeDTO.getId());
@@ -250,8 +253,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
                 .content(mapper.writeValueAsString(employeeDTO)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.lastName",equalTo("modifiedLast")))
-                .andExpect(jsonPath("$.firstName",equalTo("first")))
-                .andExpect(jsonPath("$.email",equalTo("abc@Empl.com")))
+                .andExpect(jsonPath("$.firstName",equalTo(FIRST_NAME)))
+                .andExpect(jsonPath("$.email",equalTo(EMAIL)))
                 .andExpect(jsonPath("$.id",equalTo(1)));
 
         //Then
@@ -264,7 +267,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     void updateEmployeeWith400() throws Exception {
         //Given
         EmployeeDTO employeeDTO = new EmployeeDTO();
-        employeeDTO.setId(1L);
+        employeeDTO.setId(EMPLOYEE_IDENTIFIER1);
         employeeDTO.setLastName("modifiedLast");
 
         //When
@@ -277,7 +280,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     void updateEmployeeWith400AndNotFoundException() throws Exception {
         //Given
         EmployeeDTO employeeDTO = new EmployeeDTO();
-        employeeDTO.setId(1L);
+        employeeDTO.setId(EMPLOYEE_IDENTIFIER1);
         employeeDTO.setLastName("modifiedLast");
 
         //When
@@ -290,7 +293,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     @Test
     void deleteEmployee(){
         // When
-        employeeController.deleteEmployee(1L);
+        employeeController.deleteEmployee(EMPLOYEE_IDENTIFIER1);
 
         //Then
         then(employeeService).should().deleteEmployee(any(Long.class));
@@ -303,10 +306,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     void deleteEmployeeStatusOK() throws Exception {
 //        Given
         EmployeeDTO employeeDTO = new EmployeeDTO();
-        employeeDTO.setId(1L);
+        employeeDTO.setId(EMPLOYEE_IDENTIFIER1);
         employeeDTO.setLastName("modifiedLast");
-        employeeDTO.setFirstName("first");
-        employeeDTO.setEmail("abc@Empl.com");
+        employeeDTO.setFirstName(FIRST_NAME);
+        employeeDTO.setEmail(EMAIL);
 //        when
         mockMvc.perform(delete("/employees/1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -315,6 +318,5 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
                 .andExpect(jsonPath("$",equalTo("Employee with ID: 1 has been deleted successfully")));
 
     }
-
 
 }

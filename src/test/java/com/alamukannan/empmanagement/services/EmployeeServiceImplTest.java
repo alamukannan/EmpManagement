@@ -25,6 +25,10 @@ import static org.mockito.BDDMockito.then;
 class EmployeeServiceImplTest {
 
     static final Long EMPLOYEE_IDENTIFIER1 =1L;
+
+    static final String FIRST_NAME ="alamu";
+    static final String LAST_NAME ="khanna";
+    static final String EMAIL ="abc@gmail.com";
     @Mock
     EmployeeRepository employeeRepository;
 
@@ -42,9 +46,9 @@ class EmployeeServiceImplTest {
         // Given
         EmployeeDTO employeeDTO = new EmployeeDTO();
         employeeDTO.setId(EMPLOYEE_IDENTIFIER1);
-        employeeDTO.setFirstName("alamu");
-        employeeDTO.setLastName("khanna");
-        employeeDTO.setEmail("abc@gmail.com");
+        employeeDTO.setFirstName(FIRST_NAME);
+        employeeDTO.setLastName(LAST_NAME);
+        employeeDTO.setEmail(EMAIL);
         Employee employee= Mapper.getEmployee(employeeDTO);
         given(employeeRepository.save(any(Employee.class))).willReturn(employee);
 
@@ -53,7 +57,7 @@ class EmployeeServiceImplTest {
         // Then
         assertNotNull(savedEmployee);
         assertEquals(EMPLOYEE_IDENTIFIER1,savedEmployee.getId());
-        assertEquals("khanna",savedEmployee.getLastName());
+        assertEquals(LAST_NAME,savedEmployee.getLastName());
         then(employeeRepository).should().save(any(Employee.class));
         then(employeeRepository).shouldHaveNoMoreInteractions();
     }
@@ -77,8 +81,8 @@ class EmployeeServiceImplTest {
         //Given
          Employee employee = new Employee();
          employee.setEmail("abc@gmail.com");
-         employee.setId(1L);
-         employee.setFirstName("alamu");
+         employee.setId(EMPLOYEE_IDENTIFIER1);
+         employee.setFirstName(FIRST_NAME);
         List<Employee> employees = new ArrayList<>();
         employees.add(employee);
         given(employeeRepository.findAll()).willReturn(employees);
@@ -89,19 +93,19 @@ class EmployeeServiceImplTest {
         //Then
         assertEquals(1,employeeDTOS.size());
         assertNull(employeeDTOS.get(0).getLastName());
-        assertEquals(1L,employeeDTOS.get(0).getId());
+        assertEquals(EMPLOYEE_IDENTIFIER1,employeeDTOS.get(0).getId());
         assertEquals(13,employeeDTOS.get(0).getEmail().length());
-        assertEquals("alamu",employeeDTOS.get(0).getFirstName());
+        assertEquals(FIRST_NAME,employeeDTOS.get(0).getFirstName());
     }
 
     @Test
     void UpdateEmployee(){
         // Given
         EmployeeDTO employeeDTO = new EmployeeDTO();
-        employeeDTO.setId(1L);
-        employeeDTO.setLastName("last");
-        employeeDTO.setFirstName("first");
-        employeeDTO.setEmail("abc@gmail.com");
+        employeeDTO.setId(EMPLOYEE_IDENTIFIER1);
+        employeeDTO.setLastName(LAST_NAME);
+        employeeDTO.setFirstName(FIRST_NAME);
+        employeeDTO.setEmail(EMAIL);
 
         Employee employee = new Employee();
         employee.setId(employeeDTO.getId());
@@ -110,7 +114,7 @@ class EmployeeServiceImplTest {
         employee.setEmail("m@gmail.com");
 
         Employee savedProject = new Employee();
-        employee.setId(1L);
+        employee.setId(EMPLOYEE_IDENTIFIER1);
         employee.setLastName(employeeDTO.getLastName());
         employee.setFirstName(employeeDTO.getFirstName());
         employee.setEmail(employeeDTO.getEmail());
@@ -156,10 +160,10 @@ class EmployeeServiceImplTest {
     void deleteEmployee() {
         //        given
         Employee employee = new Employee();
-        employee.setId(1L);
-        employee.setLastName("last");
-        employee.setEmail("abc@gmail.com");
-        employee.setFirstName("firstname");
+        employee.setId(EMPLOYEE_IDENTIFIER1);
+        employee.setLastName(LAST_NAME);
+        employee.setEmail(EMAIL);
+        employee.setFirstName(FIRST_NAME);
         given(employeeRepository.findById(any())).willReturn(Optional.of(employee));
 //        When
         employeeService.deleteEmployee(employee.getId());
@@ -175,7 +179,7 @@ class EmployeeServiceImplTest {
         given(employeeRepository.findById(anyLong())).willReturn(Optional.empty());
 
         // Then
-        assertThrows(EmployeeNotFoundException.class,()-> employeeService.deleteEmployee(1L));
+        assertThrows(EmployeeNotFoundException.class,()-> employeeService.deleteEmployee(EMPLOYEE_IDENTIFIER1));
 
     }
 }

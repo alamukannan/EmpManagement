@@ -27,14 +27,16 @@ public class EmployeeController {
 
     @GetMapping("/")
     public String index() {
+    	log.info("Requested the index page...");
         return "index";
     }
+    
     @PostMapping(value = "/new",consumes = "application/json",produces = "application/json")
     public ResponseEntity<Object> createNewEmployee(@Valid @RequestBody EmployeeDTO employeeDTO, BindingResult bindingResult){
 
         log.info("Requested to save new Employee");
         if (bindingResult.hasErrors()){
-            log.error("Problem with RequestBody in while creating Employee");
+            log.error("Problem with RequestBody while creating Employee");
             Map<String, String> errorsMap = new HashMap<>();
             bindingResult.getFieldErrors().forEach(fieldError -> errorsMap.put(fieldError.getField(), fieldError.getDefaultMessage()));
             return new ResponseEntity<>(errorsMap,HttpStatus.BAD_REQUEST);
@@ -65,7 +67,7 @@ public class EmployeeController {
     public ResponseEntity<Object> deleteEmployee(@PathVariable Long id){
 
             employeeService.deleteEmployee(id);
-            log.debug("Deleting the Employee with Id: {}",id);
+            log.info("Deleting the Employee with Id: {}",id);
             return new ResponseEntity<>("Employee with ID: "+id+" has been deleted successfully",HttpStatus.OK);
 
     }
