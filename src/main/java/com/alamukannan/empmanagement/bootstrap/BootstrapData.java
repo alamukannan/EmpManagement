@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 @Component
-@Profile({"default,dev"})
+@Profile({"default"})
 
 public class BootstrapData implements CommandLineRunner {
 
