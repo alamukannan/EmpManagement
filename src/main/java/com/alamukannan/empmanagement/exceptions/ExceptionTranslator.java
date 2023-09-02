@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @ControllerAdvice
 public class ExceptionTranslator extends ResponseEntityExceptionHandler {
     private final Logger log = LogManager.getLogger(ExceptionTranslator.class);
-    private  String applicationName ="EMS";
+    private final String applicationName ="EMS";
 
     private final Environment env;
 

@@ -24,6 +24,7 @@ public class BootstrapData implements CommandLineRunner {
     public void run(String... args) {
         log.debug("Loading BootStrap Data -----");
         loadEmployees();
+        log.info("Loading BootStrap data has been finished....");
     }
 
     private void loadEmployees(){

@@ -27,48 +27,54 @@ public class EmployeeController {
 
     @GetMapping("/")
     public String index() {
-    	log.info("Requested the index page...");
+
+        log.info("Requested the index page...");
+
         return "index";
     }
-    
-    @PostMapping(value = "/new",consumes = "application/json",produces = "application/json")
-    public ResponseEntity<Object> createNewEmployee(@Valid @RequestBody EmployeeDTO employeeDTO, BindingResult bindingResult){
+
+    @PostMapping(value = "/new", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<Object> createNewEmployee(@Valid @RequestBody EmployeeDTO employeeDTO, BindingResult bindingResult) {
 
         log.info("Requested to save new Employee");
-        if (bindingResult.hasErrors()){
+
+        if (bindingResult.hasErrors()) {
             log.error("Problem with RequestBody while creating Employee");
             Map<String, String> errorsMap = new HashMap<>();
             bindingResult.getFieldErrors().forEach(fieldError -> errorsMap.put(fieldError.getField(), fieldError.getDefaultMessage()));
-            return new ResponseEntity<>(errorsMap,HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(errorsMap, HttpStatus.BAD_REQUEST);
         }
-      EmployeeDTO employeeDTO1= employeeService.createNewEmployee(employeeDTO);
-      return new ResponseEntity<>(employeeDTO1, HttpStatus.CREATED);
+
+        EmployeeDTO employeeDTO1 = employeeService.createNewEmployee(employeeDTO);
+
+        return new ResponseEntity<>(employeeDTO1, HttpStatus.CREATED);
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<EmployeeDTO>> getAllEmployees(){
-        log.debug("Requested to get all the employees");
-      List<EmployeeDTO> employees =  employeeService.getAllEmployees();
+    public ResponseEntity<List<EmployeeDTO>> getAllEmployees() {
+        log.info("Requested to get all the employees");
 
-      return ResponseEntity.ok(employees);
+        List<EmployeeDTO> employees = employeeService.getAllEmployees();
+
+        return ResponseEntity.ok(employees);
     }
 
     @PutMapping("/employees/{id}")
-    public ResponseEntity<EmployeeDTO> updateEmployee( @PathVariable Long id ,@Valid @RequestBody EmployeeDTO employeeDTO){
-        log.debug("Requested to update employee with ID: {}",employeeDTO.getId());
+    public ResponseEntity<EmployeeDTO> updateEmployee(@PathVariable Long id, @Valid @RequestBody EmployeeDTO employeeDTO) {
+        log.debug("Requested to update employee with ID: {}", employeeDTO.getId());
 
-        EmployeeDTO updatedEmployee = employeeService.updateEmployee(id,employeeDTO);
+        EmployeeDTO updatedEmployee = employeeService.updateEmployee(id, employeeDTO);
 
         return ResponseEntity.ok(updatedEmployee);
     }
 
     @DeleteMapping("/employees/{id}")
     @ResponseBody()
-    public ResponseEntity<Object> deleteEmployee(@PathVariable Long id){
+    public ResponseEntity<Object> deleteEmployee(@PathVariable Long id) {
+        log.info("Deleting the Employee with Id: {}", id);
 
-            employeeService.deleteEmployee(id);
-            log.info("Deleting the Employee with Id: {}",id);
-            return new ResponseEntity<>("Employee with ID: "+id+" has been deleted successfully",HttpStatus.OK);
+        employeeService.deleteEmployee(id);
+        return new ResponseEntity<>("Employee with ID: " + id + " has been deleted successfully", HttpStatus.OK);
 
     }
 }

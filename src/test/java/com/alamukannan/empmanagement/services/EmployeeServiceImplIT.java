@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,11 +27,11 @@ class EmployeeServiceImplIT {
     EmployeeRepository employeeRepository;
 
     EmployeeService employeeService;
-    static final Long EMPLOYEE_IDENTIFIER =1L;
+    static final Long EMPLOYEE_IDENTIFIER = 1L;
 
 
     @BeforeEach
-    void init(){
+    void init() {
         employeeService = new EmployeeServiceImpl(employeeRepository);
         BootstrapData data = new BootstrapData(employeeRepository);
         data.run();
@@ -48,30 +49,30 @@ class EmployeeServiceImplIT {
         employeeDTO.setEmail("abc@gmail.com");
 
         // When
-        EmployeeDTO savedEmployee=  employeeService.createNewEmployee(employeeDTO);
+        EmployeeDTO savedEmployee = employeeService.createNewEmployee(employeeDTO);
         // Then
         assertNotNull(savedEmployee);
         assertNotNull(savedEmployee.getId());
-        assertEquals("khanna1",savedEmployee.getLastName());
+        assertEquals("khanna1", savedEmployee.getLastName());
 
     }
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
-    void getAllEmployees(){
+    void getAllEmployees() {
         // When
         List<EmployeeDTO> employeeDTOS = employeeService.getAllEmployees();
 
         //Then
-        assertEquals(2,employeeDTOS.size());
+        assertEquals(2, employeeDTOS.size());
         assertNotNull(employeeDTOS.get(0).getLastName());
-        assertEquals(EMPLOYEE_IDENTIFIER,employeeDTOS.get(0).getId());
-        assertEquals("ramu",employeeDTOS.get(0).getFirstName());
+        assertEquals(EMPLOYEE_IDENTIFIER, employeeDTOS.get(0).getId());
+        assertEquals("ramu", employeeDTOS.get(0).getFirstName());
     }
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
-    void UpdateEmployee(){
+    void UpdateEmployee() {
         // Given
         EmployeeDTO employeeDTO = new EmployeeDTO();
         employeeDTO.setId(2L);
@@ -79,13 +80,13 @@ class EmployeeServiceImplIT {
 
         // When
 
-        EmployeeDTO returnedEmp =   employeeService.updateEmployee(2L,employeeDTO);
+        EmployeeDTO returnedEmp = employeeService.updateEmployee(2L, employeeDTO);
 
         // Then
         assertNotNull(returnedEmp);
-        assertEquals("modifiedLast",returnedEmp.getLastName());
+        assertEquals("modifiedLast", returnedEmp.getLastName());
         assertNotNull(returnedEmp.getId());
-        assertEquals(2,returnedEmp.getId());
+        assertEquals(2, returnedEmp.getId());
         assertNull(returnedEmp.getEmail());
         assertNull(returnedEmp.getFirstName());
 
@@ -94,11 +95,11 @@ class EmployeeServiceImplIT {
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
-    void updateEmployeeWithException(){
+    void updateEmployeeWithException() {
         //Given
         EmployeeDTO employeeDTO = new EmployeeDTO();
         //Then
-        assertThrows(EmployeeNotFoundException.class,()->employeeService.updateEmployee(3L,employeeDTO));
+        assertThrows(EmployeeNotFoundException.class, () -> employeeService.updateEmployee(3L, employeeDTO));
     }
 
     @Test
@@ -109,14 +110,14 @@ class EmployeeServiceImplIT {
         EmployeeDTO employeeDTO = new EmployeeDTO();
 
 //        then
-        assertThrows(EmployeeNotFoundException.class,()->employeeService.updateEmployee(EMPLOYEE_IDENTIFIER,employeeDTO));
+        assertThrows(EmployeeNotFoundException.class, () -> employeeService.updateEmployee(EMPLOYEE_IDENTIFIER, employeeDTO));
     }
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
-    void deleteEmployeeWithException(){
+    void deleteEmployeeWithException() {
         // Then
-        assertThrows(EmployeeNotFoundException.class,()-> employeeService.deleteEmployee(3L));
+        assertThrows(EmployeeNotFoundException.class, () -> employeeService.deleteEmployee(3L));
 
     }
 

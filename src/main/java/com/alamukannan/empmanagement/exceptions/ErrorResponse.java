@@ -21,6 +21,24 @@ public class ErrorResponse {
         this.localDateTime = localDateTime;
     }
 
+    static class ValidationError {
+        private final String field;
+        private final String message;
+
+        public ValidationError(String field, String message) {
+            this.field = field;
+            this.message = message;
+        }
+
+        public String getField() {
+            return field;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+    }
+
     public LocalDateTime getLocalDateTime() {
         return localDateTime;
     }
@@ -45,25 +63,7 @@ public class ErrorResponse {
         this.errors = errors;
     }
 
-     static class ValidationError {
-        private final String field;
-        private final String message;
-
-        public ValidationError(String field, String message) {
-            this.field = field;
-            this.message = message;
-        }
-
-        public String getField() {
-            return field;
-        }
-
-        public String getMessage() {
-            return message;
-        }
-    }
-
-    public void addValidationError(String field, String message){
+    public void addValidationError(String field, String message) {
         errors.add(new ValidationError(field, message));
     }
 }

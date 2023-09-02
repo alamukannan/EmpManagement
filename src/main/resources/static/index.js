@@ -2,11 +2,8 @@ const BASE_URL = "http://localhost:8080";
 const FIRST_NAME = "firstName"
 const LAST_NAME = "lastName"
 const EMAIL = "email";
-
 let isModifying = false;
-
 let modifyingEmp = "";
-
 let employees = [];
 
 

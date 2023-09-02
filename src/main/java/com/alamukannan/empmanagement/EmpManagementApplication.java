@@ -2,6 +2,7 @@ package com.alamukannan.empmanagement;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 
@@ -9,7 +10,9 @@ import org.springframework.web.client.RestTemplate;
 public class EmpManagementApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(EmpManagementApplication.class, args);
+
+		ConfigurableApplicationContext app=	SpringApplication.run(EmpManagementApplication.class, args);
+		app.getEnvironment().setActiveProfiles("dev");
 	}
 	@Bean
 	public RestTemplate getRestTemplate() {

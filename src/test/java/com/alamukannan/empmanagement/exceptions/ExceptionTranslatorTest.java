@@ -28,18 +28,6 @@ class ExceptionTranslatorTest {
 
     @Mock
     HttpHeaders headers;
-    @Mock
-    MethodArgumentNotValidException methodArgumentNotValidException;
-
-    @Mock
-    ErrorResponse errorResponse;
-
-    @Mock
-    BindingResult bindingResult;
-
-    @Mock
-    ResponseEntityExceptionHandler exceptionHandler;
-
     ExceptionTranslator exceptionTranslator;
 
 

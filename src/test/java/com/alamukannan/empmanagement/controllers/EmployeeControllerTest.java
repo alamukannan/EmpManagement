@@ -33,25 +33,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @ExtendWith(MockitoExtension.class)
-  class EmployeeControllerTest {
+class EmployeeControllerTest {
 
 
-     static final Long EMPLOYEE_IDENTIFIER1 =1L;
-     
-     static final String FIRST_NAME ="alamu";
-     static final String LAST_NAME ="khanna";
-     static final String EMAIL ="abc@gmail.com";
+    static final Long EMPLOYEE_IDENTIFIER1 = 1L;
 
-
+    static final String FIRST_NAME = "alamu";
+    static final String LAST_NAME = "khanna";
+    static final String EMAIL = "abc@gmail.com";
     EmployeeController employeeController;
     @Mock
     EmployeeService employeeService;
-
     @Mock
     BindingResult bindingResult;
-
-
-
     MockMvc mockMvc;
 
     private final ObjectMapper mapper = new ObjectMapper();
@@ -86,15 +80,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         given(employeeService.createNewEmployee(any(EmployeeDTO.class))).willReturn(employeeDTO);
 
         // When
-       ResponseEntity<Object> response = employeeController.createNewEmployee(employeeDTO,bindingResult);
+        ResponseEntity<Object> response = employeeController.createNewEmployee(employeeDTO, bindingResult);
 
-       // Then
-      assertNotNull(response.getBody());
+        // Then
+        assertNotNull(response.getBody());
 
-      assertEquals(HttpStatus.CREATED,response.getStatusCode());
-      assertEquals(employeeDTO.getClass().getDeclaredMethod("getFirstName"),Objects.requireNonNull(response.getBody().getClass().getDeclaredMethod("getFirstName")));
-      then(employeeService).should().createNewEmployee(any(EmployeeDTO.class));
-      then(employeeService).shouldHaveNoMoreInteractions();
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(employeeDTO.getClass().getDeclaredMethod("getFirstName"), Objects.requireNonNull(response.getBody().getClass().getDeclaredMethod("getFirstName")));
+        then(employeeService).should().createNewEmployee(any(EmployeeDTO.class));
+        then(employeeService).shouldHaveNoMoreInteractions();
 
     }
 
@@ -109,19 +103,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
         given(employeeService.createNewEmployee(any(EmployeeDTO.class))).willReturn(employeeDTO);
 
-       //        When
-       mockMvc.perform(post("/new")
-                       .contentType(MediaType.APPLICATION_JSON)
-                       .content(mapper.writeValueAsString(employeeDTO)))
-               .andExpect(status().isCreated())
-               .andExpect(MockMvcResultMatchers.jsonPath("$.id").exists())
-               .andExpect(MockMvcResultMatchers.jsonPath("$.firstName").exists())
-               .andExpect(MockMvcResultMatchers.jsonPath("$.email").exists())
-               .andExpect(jsonPath("$.id",equalTo(1)))
-               .andExpect(jsonPath("$.firstName",equalTo("alamuKhannan")))
-               .andExpect(jsonPath("$.lastName",equalTo(null)))
-               .andExpect(jsonPath("$.email",equalTo(EMAIL)))
-       ;
+        //        When
+        mockMvc.perform(post("/new")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(employeeDTO)))
+                .andExpect(status().isCreated())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.firstName").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.email").exists())
+                .andExpect(jsonPath("$.id", equalTo(1)))
+                .andExpect(jsonPath("$.firstName", equalTo("alamuKhannan")))
+                .andExpect(jsonPath("$.lastName", equalTo(null)))
+                .andExpect(jsonPath("$.email", equalTo(EMAIL)))
+        ;
     }
 
     @Test()
@@ -132,12 +126,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         employeeDTO.setFirstName("abc");
 
         //        When
-       mockMvc.perform(post("/new")
+        mockMvc.perform(post("/new")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(employeeDTO)))
                 .andExpect(status().isBadRequest())
-               .andExpect(jsonPath("$.firstName", Is.is("name should be greater than 4 letters")))
-               .andExpect(jsonPath("$.email", Is.is("Email of the employee shouldn't be empty")));
+                .andExpect(jsonPath("$.firstName", Is.is("name should be greater than 4 letters")))
+                .andExpect(jsonPath("$.email", Is.is("Email of the employee shouldn't be empty")));
     }
 
     @Test
@@ -153,7 +147,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
                         .content(mapper.writeValueAsString(employeeDTO)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.firstName", Is.is("Name of the employee shouldn't be empty")))
-                .andExpect(jsonPath("$.email",Is.is("Email of the employee shouldn't be empty")));
+                .andExpect(jsonPath("$.email", Is.is("Email of the employee shouldn't be empty")));
 
     }
 
@@ -172,15 +166,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         given(employeeService.getAllEmployees()).willReturn(employeeDTOS);
 
         // When
-        ResponseEntity<List<EmployeeDTO>> returnedEmp= employeeController.getAllEmployees();
+        ResponseEntity<List<EmployeeDTO>> returnedEmp = employeeController.getAllEmployees();
 
         //Then
         assertNotNull(returnedEmp);
-        assertEquals(HttpStatus.OK,returnedEmp.getStatusCode());
+        assertEquals(HttpStatus.OK, returnedEmp.getStatusCode());
         assertEquals(1, Objects.requireNonNull(returnedEmp.getBody()).size());
         then(employeeService).should().getAllEmployees();
         then(employeeService).shouldHaveNoMoreInteractions();
     }
+
     @Test
     @DisplayName("test getAllEmployees with 200")
     void getAllEmployeesWithOK() throws Exception {
@@ -199,13 +194,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
                 .andReturn().getResponse();
 
         // Then
-         assertNotNull(employees);
-         assertNotNull(employees.getContentAsString());
+        assertNotNull(employees);
+        assertNotNull(employees.getContentAsString());
 
     }
 
     @Test
-    void updateEmployee(){
+    void updateEmployee() {
         // Given
         EmployeeDTO employeeDTO = new EmployeeDTO();
         employeeDTO.setId(1L);
@@ -215,16 +210,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         returnedEmp.setId(employeeDTO.getId());
         returnedEmp.setLastName(employeeDTO.getLastName());
 
-        given(employeeService.updateEmployee(anyLong(),any(EmployeeDTO.class))).willReturn(returnedEmp);
+        given(employeeService.updateEmployee(anyLong(), any(EmployeeDTO.class))).willReturn(returnedEmp);
 
         // When
-      ResponseEntity<EmployeeDTO> response=  employeeController.updateEmployee(1L,employeeDTO);
+        ResponseEntity<EmployeeDTO> response = employeeController.updateEmployee(1L, employeeDTO);
 
         //Then
         assertNotNull(response);
-        assertEquals(HttpStatus.OK,response.getStatusCode());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(Objects.requireNonNull(response.getBody()).getId());
-        assertEquals("modifiedLast",response.getBody().getLastName());
+        assertEquals("modifiedLast", response.getBody().getLastName());
         assertNotNull(returnedEmp.getId());
         assertNotNull(response.getBody().getId());
         assertNull(response.getBody().getFirstName());
@@ -246,19 +241,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         returnedEmp.setFirstName(employeeDTO.getFirstName());
         returnedEmp.setEmail(employeeDTO.getEmail());
 
-        given(employeeService.updateEmployee(anyLong(),any(EmployeeDTO.class))).willReturn(returnedEmp);
+        given(employeeService.updateEmployee(anyLong(), any(EmployeeDTO.class))).willReturn(returnedEmp);
 
         //When
         mockMvc.perform(put("/employees/1").contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(employeeDTO)))
+                        .content(mapper.writeValueAsString(employeeDTO)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.lastName",equalTo("modifiedLast")))
-                .andExpect(jsonPath("$.firstName",equalTo(FIRST_NAME)))
-                .andExpect(jsonPath("$.email",equalTo(EMAIL)))
-                .andExpect(jsonPath("$.id",equalTo(1)));
+                .andExpect(jsonPath("$.lastName", equalTo("modifiedLast")))
+                .andExpect(jsonPath("$.firstName", equalTo(FIRST_NAME)))
+                .andExpect(jsonPath("$.email", equalTo(EMAIL)))
+                .andExpect(jsonPath("$.id", equalTo(1)));
 
         //Then
-        then(employeeService).should().updateEmployee(anyLong(),any(EmployeeDTO.class));
+        then(employeeService).should().updateEmployee(anyLong(), any(EmployeeDTO.class));
         then(employeeService).shouldHaveNoMoreInteractions();
 
     }
@@ -291,7 +286,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     }
 
     @Test
-    void deleteEmployee(){
+    void deleteEmployee() {
         // When
         employeeController.deleteEmployee(EMPLOYEE_IDENTIFIER1);
 
@@ -315,7 +310,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(employeeDTO)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$",equalTo("Employee with ID: 1 has been deleted successfully")));
+                .andExpect(jsonPath("$", equalTo("Employee with ID: 1 has been deleted successfully")));
 
     }
 

@@ -40,6 +40,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeDTO updateEmployee(Long id, EmployeeDTO employeeDTO) {
 
         Optional<Employee> foundEmployee = employeeRepository.findById(id);
+
         if (foundEmployee.isPresent()){
             Employee detachedEmployee = foundEmployee.get();
             detachedEmployee.setFirstName(employeeDTO.getFirstName());
@@ -55,11 +56,13 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public void deleteEmployee(Long id) {
          Optional<Employee> employee = employeeRepository.findById(id);
+
          if (employee.isPresent()){
              employeeRepository.delete(employee.get());
          }else{
              throw new EmployeeNotFoundException("Employee with given Id: "+id);
          }
+
     }
 
 }

@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MapperTest {
-    static final Long EMPLOYEE_ID1 =1L;
+    static final Long EMPLOYEE_ID1 = 1L;
     static final Long EMPLOYEE_ID2 = 2L;
 
 
@@ -25,11 +25,11 @@ class MapperTest {
         //When
         Employee employee = Mapper.getEmployee(employeeDTO);
         //Then
-        assertEquals(EMPLOYEE_ID1,employee.getId());
-        assertEquals("alamu",employee.getFirstName());
-        assertEquals("khanna",employee.getLastName());
+        assertEquals(EMPLOYEE_ID1, employee.getId());
+        assertEquals("alamu", employee.getFirstName());
+        assertEquals("khanna", employee.getLastName());
         assertNotNull(employee.getEmail());
-        assertEquals("abc@gmail.com",employee.getEmail());
+        assertEquals("abc@gmail.com", employee.getEmail());
 
     }
 
@@ -49,11 +49,11 @@ class MapperTest {
         EmployeeDTO employeeDTO = Mapper.getEmployeeDTO(employee);
 
         // Then
-        assertEquals(EMPLOYEE_ID2,employeeDTO.getId());
-        assertEquals("ramu",employeeDTO.getFirstName());
-        assertEquals("somu",employeeDTO.getLastName());
+        assertEquals(EMPLOYEE_ID2, employeeDTO.getId());
+        assertEquals("ramu", employeeDTO.getFirstName());
+        assertEquals("somu", employeeDTO.getLastName());
         assertNotNull(employeeDTO.getEmail());
-        assertEquals("ramusomu@gmail.com",employeeDTO.getEmail());
+        assertEquals("ramusomu@gmail.com", employeeDTO.getEmail());
 
     }
 }

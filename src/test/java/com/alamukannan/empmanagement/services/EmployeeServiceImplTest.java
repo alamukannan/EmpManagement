@@ -24,11 +24,11 @@ import static org.mockito.BDDMockito.then;
 @ExtendWith(MockitoExtension.class)
 class EmployeeServiceImplTest {
 
-    static final Long EMPLOYEE_IDENTIFIER1 =1L;
+    static final Long EMPLOYEE_IDENTIFIER1 = 1L;
 
-    static final String FIRST_NAME ="alamu";
-    static final String LAST_NAME ="khanna";
-    static final String EMAIL ="abc@gmail.com";
+    static final String FIRST_NAME = "alamu";
+    static final String LAST_NAME = "khanna";
+    static final String EMAIL = "abc@gmail.com";
     @Mock
     EmployeeRepository employeeRepository;
 
@@ -36,7 +36,7 @@ class EmployeeServiceImplTest {
 
 
     @BeforeEach
-    void init(){
+    void init() {
         employeeService = new EmployeeServiceImpl(employeeRepository);
     }
 
@@ -49,15 +49,15 @@ class EmployeeServiceImplTest {
         employeeDTO.setFirstName(FIRST_NAME);
         employeeDTO.setLastName(LAST_NAME);
         employeeDTO.setEmail(EMAIL);
-        Employee employee= Mapper.getEmployee(employeeDTO);
+        Employee employee = Mapper.getEmployee(employeeDTO);
         given(employeeRepository.save(any(Employee.class))).willReturn(employee);
 
         // When
-        EmployeeDTO savedEmployee=  employeeService.createNewEmployee(employeeDTO);
+        EmployeeDTO savedEmployee = employeeService.createNewEmployee(employeeDTO);
         // Then
         assertNotNull(savedEmployee);
-        assertEquals(EMPLOYEE_IDENTIFIER1,savedEmployee.getId());
-        assertEquals(LAST_NAME,savedEmployee.getLastName());
+        assertEquals(EMPLOYEE_IDENTIFIER1, savedEmployee.getId());
+        assertEquals(LAST_NAME, savedEmployee.getLastName());
         then(employeeRepository).should().save(any(Employee.class));
         then(employeeRepository).shouldHaveNoMoreInteractions();
     }
@@ -72,17 +72,17 @@ class EmployeeServiceImplTest {
         // When
         List<EmployeeDTO> employeeDTOS = employeeService.getAllEmployees();
 
-      // Then
-        assertEquals(0,employeeDTOS.size());
+        // Then
+        assertEquals(0, employeeDTOS.size());
     }
 
     @Test
-    void getAllEmployees(){
+    void getAllEmployees() {
         //Given
-         Employee employee = new Employee();
-         employee.setEmail("abc@gmail.com");
-         employee.setId(EMPLOYEE_IDENTIFIER1);
-         employee.setFirstName(FIRST_NAME);
+        Employee employee = new Employee();
+        employee.setEmail("abc@gmail.com");
+        employee.setId(EMPLOYEE_IDENTIFIER1);
+        employee.setFirstName(FIRST_NAME);
         List<Employee> employees = new ArrayList<>();
         employees.add(employee);
         given(employeeRepository.findAll()).willReturn(employees);
@@ -91,15 +91,15 @@ class EmployeeServiceImplTest {
         List<EmployeeDTO> employeeDTOS = employeeService.getAllEmployees();
 
         //Then
-        assertEquals(1,employeeDTOS.size());
+        assertEquals(1, employeeDTOS.size());
         assertNull(employeeDTOS.get(0).getLastName());
-        assertEquals(EMPLOYEE_IDENTIFIER1,employeeDTOS.get(0).getId());
-        assertEquals(13,employeeDTOS.get(0).getEmail().length());
-        assertEquals(FIRST_NAME,employeeDTOS.get(0).getFirstName());
+        assertEquals(EMPLOYEE_IDENTIFIER1, employeeDTOS.get(0).getId());
+        assertEquals(13, employeeDTOS.get(0).getEmail().length());
+        assertEquals(FIRST_NAME, employeeDTOS.get(0).getFirstName());
     }
 
     @Test
-    void UpdateEmployee(){
+    void UpdateEmployee() {
         // Given
         EmployeeDTO employeeDTO = new EmployeeDTO();
         employeeDTO.setId(EMPLOYEE_IDENTIFIER1);
@@ -126,17 +126,17 @@ class EmployeeServiceImplTest {
 
         // When
 
-       EmployeeDTO returnedEmp =   employeeService.updateEmployee(1L,employeeDTO);
+        EmployeeDTO returnedEmp = employeeService.updateEmployee(1L, employeeDTO);
 
-      // Then
+        // Then
         assertNotNull(returnedEmp);
-        assertEquals(savedProject.getLastName(),returnedEmp.getLastName());
-        assertNotEquals(employee.getLastName(),returnedEmp.getLastName());
-        assertNotEquals(employee.getFirstName(),returnedEmp.getFirstName());
-        assertNotEquals(employee.getEmail(),returnedEmp.getEmail());
-        assertEquals(savedProject.getFirstName(),returnedEmp.getFirstName());
-        assertEquals(savedProject.getEmail(),returnedEmp.getEmail());
-        assertEquals(optionalEmployee,Optional.of(employee));
+        assertEquals(savedProject.getLastName(), returnedEmp.getLastName());
+        assertNotEquals(employee.getLastName(), returnedEmp.getLastName());
+        assertNotEquals(employee.getFirstName(), returnedEmp.getFirstName());
+        assertNotEquals(employee.getEmail(), returnedEmp.getEmail());
+        assertEquals(savedProject.getFirstName(), returnedEmp.getFirstName());
+        assertEquals(savedProject.getEmail(), returnedEmp.getEmail());
+        assertEquals(optionalEmployee, Optional.of(employee));
         assertNotNull(optionalEmployee.get().getId());
         assertNotNull(optionalEmployee.get().getLastName());
         assertNotNull(optionalEmployee.get().getFirstName());
@@ -147,13 +147,13 @@ class EmployeeServiceImplTest {
     }
 
     @Test
-    void updateEmployeeWithException(){
+    void updateEmployeeWithException() {
         //Given
         EmployeeDTO employeeDTO = new EmployeeDTO();
         given(employeeRepository.findById(anyLong())).willReturn(Optional.empty());
 
         //Then
-        assertThrows(EmployeeNotFoundException.class,()->employeeService.updateEmployee(1L,employeeDTO));
+        assertThrows(EmployeeNotFoundException.class, () -> employeeService.updateEmployee(1L, employeeDTO));
     }
 
     @Test
@@ -174,12 +174,12 @@ class EmployeeServiceImplTest {
     }
 
     @Test
-    void deleteEmployeeWithException(){
+    void deleteEmployeeWithException() {
         //Given
         given(employeeRepository.findById(anyLong())).willReturn(Optional.empty());
 
         // Then
-        assertThrows(EmployeeNotFoundException.class,()-> employeeService.deleteEmployee(EMPLOYEE_IDENTIFIER1));
+        assertThrows(EmployeeNotFoundException.class, () -> employeeService.deleteEmployee(EMPLOYEE_IDENTIFIER1));
 
     }
 }

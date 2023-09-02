@@ -12,10 +12,11 @@ public class EmployeeDTO {
     @Size(min = 4,message = "name should be greater than 4 letters")
     private String firstName;
     private  String lastName;
-
     @Email
     @NotBlank(message = "Email of the employee shouldn't be empty")
     private String email;
+
+    // Getters and Setters
 
     public Long getId() {
         return id;
