@@ -17,7 +17,6 @@ import java.time.LocalDateTime;
 @ControllerAdvice
 public class ExceptionTranslator extends ResponseEntityExceptionHandler {
     private final Logger log = LogManager.getLogger(ExceptionTranslator.class);
-    private final String applicationName ="EMS";
 
     private final Environment env;
 
@@ -47,7 +46,8 @@ public class ExceptionTranslator extends ResponseEntityExceptionHandler {
                                                       String message,
                                                       HttpStatus httpStatus,
                                                       WebRequest request) {
-        ErrorResponse errorResponse = new ErrorResponse(httpStatus.value(), message, this.applicationName, LocalDateTime.now());
+        String applicationName = "EMS";
+        ErrorResponse errorResponse = new ErrorResponse(httpStatus.value(), message, applicationName, LocalDateTime.now());
         log.debug("An exception occurred {} with a request {}",exception,request);
         return ResponseEntity.status(httpStatus).body(errorResponse);
     }

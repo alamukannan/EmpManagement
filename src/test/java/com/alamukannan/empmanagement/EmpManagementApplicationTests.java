@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
-public class EmpManagementApplicationTests {
+ class EmpManagementApplicationTests {
 
 	@Autowired
 	EmployeeController employeeController;
