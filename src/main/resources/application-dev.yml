@@ -2,9 +2,9 @@ spring:
   application:
     name: EmployeeManagement
   datasource:
-    url: jdbc:mysql://localhost:3306/ems_dev
-    username: ems_dev_user
-    password: emsv1
+    url: jdbc:mysql://localhost:3307/ems_prod
+    username: root
+    password: 123456
     platform: mysql
   jpa:
     hibernate:
@@ -12,11 +12,10 @@ spring:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     database: mysql
     show-sql: true
-
-      #     javax:
-      #       persistence:
-      #         schema-generation:
-      #          create-source: metadata
-      #         scripts:
-      #          action: create
-      #         create-target: ems_database_create.sql
+  mvc:
+    pathmatch:
+      matching-strategy: path_pattern_parser
+server:
+  error:
+    include-stacktrace: never
+  port: 8082
