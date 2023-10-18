@@ -1,5 +1,6 @@
 package com.alamukannan.empmanagement.services;
 
+import com.alamukannan.AbstractContainerBaseTest;
 import com.alamukannan.empmanagement.bootstrap.BootstrapData;
 import com.alamukannan.empmanagement.dtos.EmployeeDTO;
 import com.alamukannan.empmanagement.exceptions.EmployeeNotFoundException;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
@@ -23,7 +25,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @ExtendWith(SpringExtension.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DataJpaTest
-class EmployeeServiceImplIT {
+@ActiveProfiles("dev")
+class EmployeeServiceImplIT extends AbstractContainerBaseTest {
 
     @Autowired
     EmployeeRepository employeeRepository;
@@ -37,7 +40,6 @@ class EmployeeServiceImplIT {
         BootstrapData data = new BootstrapData(employeeRepository);
         data.run();
     }
-
 
     @Test
     @DisplayName("test Create new employee in service layer")
