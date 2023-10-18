@@ -9,7 +9,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -20,7 +20,7 @@ class EmployeeRepositoryTest extends AbstractContainerBaseTest {
     private EmployeeRepository employeeRepository;
 
     @Test
-     void givenEmployeeObject_whenSave_thenReturnSavedEmployee(){
+    void givenEmployeeObject_whenSave_thenReturnSavedEmployee() {
 
         // given
         Employee employee = new Employee();
@@ -36,24 +36,25 @@ class EmployeeRepositoryTest extends AbstractContainerBaseTest {
         Assertions.assertNotNull(employee1.getId());
 
     }
+
     @Test
-   void givenEmployee_whenFindByFirstName_thenReturnSavedEmployee(){
+    void givenEmployee_whenFindByFirstName_thenReturnSavedEmployee() {
 
         // given
         Employee employee = new Employee();
         employee.setFirstName("Ramu");
         employee.setLastName("somu");
         employee.setEmail("abc@gmail.com");
-         employeeRepository.save(employee);
+        employeeRepository.save(employee);
 
         // when
         Employee employee1 = employeeRepository.findByFirstName(employee.getFirstName());
 
         // then
         Assertions.assertNotNull(employee1);
-        assertEquals(employee.getFirstName(),employee1.getFirstName());
-        assertEquals(employee.getLastName(),employee1.getLastName());
-        assertEquals(employee.getEmail(),employee1.getEmail());
+        assertEquals(employee.getFirstName(), employee1.getFirstName());
+        assertEquals(employee.getLastName(), employee1.getLastName());
+        assertEquals(employee.getEmail(), employee1.getEmail());
     }
 
 

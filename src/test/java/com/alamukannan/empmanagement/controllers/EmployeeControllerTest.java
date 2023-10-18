@@ -1,6 +1,5 @@
 package com.alamukannan.empmanagement.controllers;
 
-
 import com.alamukannan.empmanagement.dtos.EmployeeDTO;
 import com.alamukannan.empmanagement.services.EmployeeService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,11 +30,8 @@ import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-
 @ExtendWith(MockitoExtension.class)
 class EmployeeControllerTest {
-
-
     static final Long EMPLOYEE_IDENTIFIER1 = 1L;
 
     static final String FIRST_NAME = "alamu";
@@ -61,9 +57,7 @@ class EmployeeControllerTest {
     @Test
     void getIndexPage() throws Exception {
         // When
-        mockMvc.perform(get("/"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("index"));
+        mockMvc.perform(get("/")).andExpect(status().isOk()).andExpect(view().name("index"));
     }
 
     @Test
@@ -104,18 +98,7 @@ class EmployeeControllerTest {
         given(employeeService.createNewEmployee(any(EmployeeDTO.class))).willReturn(employeeDTO);
 
         //        When
-        mockMvc.perform(post("/new")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(employeeDTO)))
-                .andExpect(status().isCreated())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").exists())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.firstName").exists())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.email").exists())
-                .andExpect(jsonPath("$.id", equalTo(1)))
-                .andExpect(jsonPath("$.firstName", equalTo("alamuKhannan")))
-                .andExpect(jsonPath("$.lastName", equalTo(null)))
-                .andExpect(jsonPath("$.email", equalTo(EMAIL)))
-        ;
+        mockMvc.perform(post("/new").contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(employeeDTO))).andExpect(status().isCreated()).andExpect(MockMvcResultMatchers.jsonPath("$.id").exists()).andExpect(MockMvcResultMatchers.jsonPath("$.firstName").exists()).andExpect(MockMvcResultMatchers.jsonPath("$.email").exists()).andExpect(jsonPath("$.id", equalTo(1))).andExpect(jsonPath("$.firstName", equalTo("alamuKhannan"))).andExpect(jsonPath("$.lastName", equalTo(null))).andExpect(jsonPath("$.email", equalTo(EMAIL)));
     }
 
     @Test()
@@ -126,12 +109,7 @@ class EmployeeControllerTest {
         employeeDTO.setFirstName("abc");
 
         //        When
-        mockMvc.perform(post("/new")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(employeeDTO)))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.firstName", Is.is("name should be greater than 4 letters")))
-                .andExpect(jsonPath("$.email", Is.is("Email of the employee shouldn't be empty")));
+        mockMvc.perform(post("/new").contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(employeeDTO))).andExpect(status().isBadRequest()).andExpect(jsonPath("$.firstName", Is.is("name should be greater than 4 letters"))).andExpect(jsonPath("$.email", Is.is("Email of the employee shouldn't be empty")));
     }
 
     @Test
@@ -142,12 +120,7 @@ class EmployeeControllerTest {
 
 
 //        When
-        mockMvc.perform(post("/new")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(employeeDTO)))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.firstName", Is.is("Name of the employee shouldn't be empty")))
-                .andExpect(jsonPath("$.email", Is.is("Email of the employee shouldn't be empty")));
+        mockMvc.perform(post("/new").contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(employeeDTO))).andExpect(status().isBadRequest()).andExpect(jsonPath("$.firstName", Is.is("Name of the employee shouldn't be empty"))).andExpect(jsonPath("$.email", Is.is("Email of the employee shouldn't be empty")));
 
     }
 
@@ -189,9 +162,7 @@ class EmployeeControllerTest {
 
         given(employeeService.getAllEmployees()).willReturn(employeeDTOS);
         // Then
-        MockHttpServletResponse employees = mockMvc.perform(get("/all").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn().getResponse();
+        MockHttpServletResponse employees = mockMvc.perform(get("/all").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andReturn().getResponse();
 
         // Then
         assertNotNull(employees);
@@ -244,13 +215,7 @@ class EmployeeControllerTest {
         given(employeeService.updateEmployee(anyLong(), any(EmployeeDTO.class))).willReturn(returnedEmp);
 
         //When
-        mockMvc.perform(put("/employees/1").contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(employeeDTO)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.lastName", equalTo("modifiedLast")))
-                .andExpect(jsonPath("$.firstName", equalTo(FIRST_NAME)))
-                .andExpect(jsonPath("$.email", equalTo(EMAIL)))
-                .andExpect(jsonPath("$.id", equalTo(1)));
+        mockMvc.perform(put("/employees/1").contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(employeeDTO))).andExpect(status().isOk()).andExpect(jsonPath("$.lastName", equalTo("modifiedLast"))).andExpect(jsonPath("$.firstName", equalTo(FIRST_NAME))).andExpect(jsonPath("$.email", equalTo(EMAIL))).andExpect(jsonPath("$.id", equalTo(1)));
 
         //Then
         then(employeeService).should().updateEmployee(anyLong(), any(EmployeeDTO.class));
@@ -266,9 +231,7 @@ class EmployeeControllerTest {
         employeeDTO.setLastName("modifiedLast");
 
         //When
-        mockMvc.perform(put("/employees/1").contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(employeeDTO)))
-                .andExpect(status().isBadRequest());
+        mockMvc.perform(put("/employees/1").contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(employeeDTO))).andExpect(status().isBadRequest());
     }
 
     @Test
@@ -279,9 +242,7 @@ class EmployeeControllerTest {
         employeeDTO.setLastName("modifiedLast");
 
         //When
-        mockMvc.perform(put("/employees/1")
-                        .contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(employeeDTO)))
-                .andExpect(status().isBadRequest());
+        mockMvc.perform(put("/employees/1").contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(employeeDTO))).andExpect(status().isBadRequest());
 
     }
 
@@ -306,11 +267,7 @@ class EmployeeControllerTest {
         employeeDTO.setFirstName(FIRST_NAME);
         employeeDTO.setEmail(EMAIL);
 //        when
-        mockMvc.perform(delete("/employees/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(employeeDTO)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", equalTo("Employee with ID: 1 has been deleted successfully")));
+        mockMvc.perform(delete("/employees/1").contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(employeeDTO))).andExpect(status().isOk()).andExpect(jsonPath("$", equalTo("Employee with ID: 1 has been deleted successfully")));
 
     }
 
