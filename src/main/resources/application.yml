@@ -18,6 +18,6 @@ spring:
 server:
   error:
     include-stacktrace: never
-  port: 8080
+  port: 8082
 
 
