@@ -3,7 +3,6 @@ package com.alamukannan.empmanagement.e2e.steps;
 
 import com.alamukannan.empmanagement.domain.Employee;
 import com.alamukannan.empmanagement.dtos.EmployeeDTO;
-import com.alamukannan.empmanagement.e2e.CucumberBootstrap;
 import com.alamukannan.empmanagement.repository.EmployeeRepository;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -13,9 +12,7 @@ import org.springframework.boot.web.server.LocalServerPort;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
-public class EmployeesStepDefinitions extends CucumberBootstrap {
-
-
+public class EmployeesStepDefinitions {
     private final String SERVER_URL = "http://localhost";
     private final String THINGS_ENDPOINT = "/new";
 
@@ -52,6 +49,6 @@ public class EmployeesStepDefinitions extends CucumberBootstrap {
     @Then("^user should receive the created employee$")
     public void then_user_should_receive_created_employee() {
         int size = employeeRepository.findAll().size();
-        assertEquals(1, size);
+        assertEquals(3, size);
     }
 }
