@@ -75,7 +75,7 @@ public class EmployeeWebControllerE2E { // NOSONAR not a standard testcase name
 	}
 
 	@Test
-	public void testDeleteEmployee() throws JSONException {
+	void testDeleteEmployee() throws JSONException {
 
 
 		WebElement employe = createEmploye();
@@ -88,12 +88,11 @@ public class EmployeeWebControllerE2E { // NOSONAR not a standard testcase name
 		// Click the "delete" button to delete the last row
 		deleteButton.click();
 
-		assertThat(driver.findElements(By.cssSelector("tr[id='"+employeId+"']")).size() != 0
-		);
+		assertThat(driver.findElements(By.cssSelector("tr[id='"+employeId+"']")).size()).isNotZero();
 	}
 
 	@Test
-	public void testEditEmployee() throws JSONException {
+	void testEditEmployee() throws JSONException {
 
 		WebElement employe = createEmploye();
 
@@ -129,7 +128,7 @@ public class EmployeeWebControllerE2E { // NOSONAR not a standard testcase name
 	}
 
 	@Test
-	public void testCreateNewEmployee() {
+	void testCreateNewEmployee() {
 		WebElement employe = createEmploye();
 
 		assertThat(employe.getText()).
@@ -138,7 +137,7 @@ public class EmployeeWebControllerE2E { // NOSONAR not a standard testcase name
 
 
 	@Test
-	public void testAllEmployees() throws JSONException {
+	void testAllEmployees() throws JSONException {
 
 		driver.get(baseUrl);
 
@@ -147,7 +146,7 @@ public class EmployeeWebControllerE2E { // NOSONAR not a standard testcase name
 		WebElement table = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("empTable")));
 		List<WebElement> rows = table.findElements(By.tagName("tr"));
 
-		assertThat(rows.size()!=0);
+		assertThat(rows.size()).isNotZero();
 
 	}
 
