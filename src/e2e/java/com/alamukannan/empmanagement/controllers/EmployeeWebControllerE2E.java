@@ -28,8 +28,10 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.testcontainers.shaded.org.awaitility.Awaitility;
 
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -44,7 +46,7 @@ import java.util.concurrent.TimeUnit;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class EmployeeWebControllerE2E  extends AbstractContainerBaseTest { 
+public class EmployeeWebControllerE2E  extends AbstractContainerBaseTest {  // NOSONAR not a standard testcase name
 
 	private static final Logger LOGGER =
 		LoggerFactory.getLogger(EmployeeWebControllerE2E.class);
@@ -129,7 +131,7 @@ public class EmployeeWebControllerE2E  extends AbstractContainerBaseTest {
 		driver.findElement(By.id("save-employe")).click();
 
 
-		Thread.sleep(1000L);
+		Awaitility.await().atMost(Duration.ofSeconds(2));  // Compliant
 		WebElement actual = driver.findElement(By.cssSelector("tr[id='" + employeId + "']"));
 
 		assertThat(
