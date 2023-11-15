@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:8082";
+const BASE_URL = window.location.origin;
 const FIRST_NAME = "firstName"
 const LAST_NAME = "lastName"
 const EMAIL = "email";

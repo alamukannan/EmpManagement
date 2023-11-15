@@ -1,10 +1,14 @@
 package com.alamukannan.empmanagement.controllers;
 
+import com.alamukannan.AbstractContainerBaseTest;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.json.JSONException;
 
-
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.junit.BeforeClass;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
@@ -23,10 +27,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.springframework.test.context.junit4.SpringRunner;
 
 
 import java.time.Instant;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Executes the tests against a running Spring Boot application; if you run this
@@ -35,16 +41,19 @@ import java.util.List;
  * 
  * No Spring specific testing mechanism is used here: this is a plain JUnit test.
  */
-public class EmployeeWebControllerE2E { // NOSONAR not a standard testcase name
+
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+public class EmployeeWebControllerE2E  extends AbstractContainerBaseTest { 
 
 	private static final Logger LOGGER =
 		LoggerFactory.getLogger(EmployeeWebControllerE2E.class);
 
 
-	private static int port =
-		Integer.parseInt(System.getProperty("server.port", "8082"));
+	@LocalServerPort
+	private int port;
 
-	private static String baseUrl = "http://localhost:" + port;
+	private static String baseUrl = "http://localhost:8082";
 
 	private WebDriver driver;
 
@@ -65,7 +74,7 @@ public class EmployeeWebControllerE2E { // NOSONAR not a standard testcase name
 
 		ChromeOptions options = new ChromeOptions();
 		driver = new ChromeDriver(options);
-
+		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
 
 	}
 
@@ -92,7 +101,7 @@ public class EmployeeWebControllerE2E { // NOSONAR not a standard testcase name
 	}
 
 	@Test
-	void testEditEmployee() throws JSONException {
+	void testEditEmployee() throws JSONException, InterruptedException {
 
 		WebElement employe = createEmploye();
 
@@ -120,6 +129,7 @@ public class EmployeeWebControllerE2E { // NOSONAR not a standard testcase name
 		driver.findElement(By.id("save-employe")).click();
 
 
+		Thread.sleep(1000L);
 		WebElement actual = driver.findElement(By.cssSelector("tr[id='" + employeId + "']"));
 
 		assertThat(

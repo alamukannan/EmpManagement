@@ -205,7 +205,7 @@
             </plugin>
 
             <!--  PIT Mutation-->
-           <plugin>
+            <plugin>
                 <groupId>org.pitest</groupId>
                 <artifactId>pitest-maven</artifactId>
                 <version>1.4.9</version>
@@ -295,8 +295,8 @@
                 <activeByDefault>false</activeByDefault>
             </activation>
             <properties>
-                <skip.unit-tests>false</skip.unit-tests>
-                <skip.integration-tests>false</skip.integration-tests>
+                <skip.unit-tests>true</skip.unit-tests>
+                <skip.integration-tests>true</skip.integration-tests>
             </properties>
             <build>
                 <plugins>
@@ -304,22 +304,6 @@
                     <plugin>
                         <groupId>org.springframework.boot</groupId>
                         <artifactId>spring-boot-maven-plugin</artifactId>
-
-                        <executions>
-                            <execution>
-                                <id>pre-integration-test</id>
-                                <goals>
-                                    <goal>start</goal>
-                                </goals>
-
-                            </execution>
-                            <execution>
-                                <id>post-integration-test</id>
-                                <goals>
-                                    <goal>stop</goal>
-                                </goals>
-                            </execution>
-                        </executions>
                     </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
